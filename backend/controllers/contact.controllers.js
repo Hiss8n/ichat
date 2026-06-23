@@ -38,19 +38,53 @@ export const getMyContact = async (req, res) => {
     const ownerId = req.user && (req.user._id || req.user.id);
     if (!ownerId) return res.status(401).json({ message: 'Unauthorized' });
 
-    const contacts = await Contact.find({ owner: ownerId })
-      .sort({ createdAt: -1 })
-      .populate('owner', 'name email');
+    const contacts = await Contact.find({ owner: ownerId }).sort({ createdAt: -1 });
 
     if (!contacts || contacts.length === 0) {
       return res.json({ contacts: null });
     }
 
-    return res.json({ contacts });
+    const enriched = await Promise.all(
+      contacts.map(async (c) => {
+        const user = await User.findOne({ email: c.email }).select('name email');
+        return {
+          id: c._id,
+          email: c.email,
+          name: user ? user.name : null,
+          createdAt: c.createdAt
+        };
+      })
+    );
+
+    return res.json({ contacts: enriched });
   } catch (err) {
     console.error('getMyContact error:', err);
     return res.status(500).json({ message: 'Server error' });
   }
 };
 
-export default { addContact, getMyContact };
+export const deleteContact = async (req, res) => {
+  try {
+    const ownerId = req.user && (req.user._id || req.user.id);
+    const contactId = req.params.id;
+
+    if (!ownerId) return res.status(401).json({ message: 'Unauthorized' });
+    if (!contactId) return res.status(400).json({ message: 'Contact id required' });
+
+    const contact = await Contact.findById(contactId);
+    if (!contact) return res.status(404).json({ message: 'Contact not found' });
+
+    if (String(contact.owner) !== String(ownerId)) {
+      return res.status(403).json({ message: 'Not allowed to delete this contact' });
+    }
+
+    await Contact.deleteOne({ _id: contactId });
+
+    return res.json({ message: 'Contact deleted' });
+  } catch (err) {
+    console.error('deleteContact error:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export default { addContact, getMyContact, deleteContact };
