@@ -1,5 +1,6 @@
 import Message from '../model/Message.js';
 import User from '../model/User.js';
+import Contact from '../model/Contact.js';
 
 export const sendMessage = async (req, res) => {
     const senderId = req.user && (req.user._id || req.user.id);
@@ -12,9 +13,12 @@ export const sendMessage = async (req, res) => {
 		if (!senderId) return res.status(401).json({ message: 'Unauthorized' });
 		if (!receiverId) return res.status(400).json({ message: 'Receiver id required' });
 
-		/* const receiver = await User.findById(receiverId);
+		const receiver = await Contact.findById(receiverId);
 		if (!receiver) return res.status(404).json({ message: 'Receiver not found' });
- */
+
+		// Ensure the receiver is in sender's contact list
+		const isContact = await Contact.findOne({ owner: senderId, email: receiver.email });
+		if (!isContact) return res.status(403).json({ message: 'You can only message users in your contacts' });
 		const message = await Message.create({
 			sender: senderId,
 			receiver: receiverId,
