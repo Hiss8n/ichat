@@ -1,6 +1,9 @@
 import cron from 'cron';
 import axios from 'axios';
 
+
+
+
 const { CronJob } = cron;
 
 const cronJobs = () => {
@@ -8,8 +11,7 @@ const cronJobs = () => {
     '*/14 * * * *',
     async () => {
       try {
-        await axios.get('http://localhost:3000/');
-        console.log('Cron job: pinged / successfully');
+        await axios.get(process.env.BACKEND_URL);
       } catch (error) {
         console.error('Cron job failed:', error.message);
       }
