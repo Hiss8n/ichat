@@ -5,7 +5,7 @@ import connectDB from './utils/db.js';
 import authRoutes from './routes/auth.routes.js';
 import messageRoutes from './routes/message.routes.js';
 import contactRoutes from './routes/contact.routes.js';
-
+import cronJobs from './utils/cron.js';
 
 const app = express();
 
@@ -26,6 +26,7 @@ connectDB()
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
+      cronJobs();
     });
   })
   .catch(err => {
