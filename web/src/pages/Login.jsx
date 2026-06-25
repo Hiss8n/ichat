@@ -1,7 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { authStore } from '../store/authStore';
 
 function Login() {
+  const navigate =useNavigate();
+
+const login = authStore((state) => state.login);
+
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -15,12 +21,23 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Login attempt:', formData);
+    
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault(); 
-    console.log('Login attempt:', formData);
+  const handleLogin = async(e) => {
+    e.preventDefault();
+    const response=await login(formData.email,formData.password);
+    console.log('login res',response);
+
+    if(response.success){
     setFormData({ email: '', password: '' });
+    navigate('/');
+    }else{
+      console.log('Failed to login',response);
+      alert(response.message);
+
+    }
+   
 
   }
 

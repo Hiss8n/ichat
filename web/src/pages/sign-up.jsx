@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import {authStore} from '../store/authStore.js';
+import { useNavigate } from 'react-router-dom';
+
 
 function SignUp() {
+
+  const register = authStore((state) => state.register);
+  const navigate =useNavigate();
+
+
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,14 +24,23 @@ function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Sign up attempt:', formData);
+   
   };
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async(e) => {
     e.preventDefault();
     // Handle sign-up logic here (e.g., API call)
-    console.log('Sign up attempt:', formData);
-    setFormData({ name: '', email: '', password: '' }); 
+    const response=await register(formData.name,formData.email,formData.password);
+    if(response.success){
+    setFormData({ name: '', email: '', password: '' });
+    navigate('/');
+    }else{
+      console.log('Failed to sign upp',response.message);
+      alert(response.message);
+
+    }
+    
+     
   };
 
   return (

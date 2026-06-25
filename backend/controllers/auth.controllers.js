@@ -26,7 +26,7 @@ export const register = async (req, res) => {
 		const userObj = user.toObject();
 		delete userObj.password;
 
-		return res.status(201).json({ user: userObj, token });
+		return res.status(201).json({ user: userObj, token,success:true });
 	} catch (err) {
 		console.error(err);
 		return res.status(500).json({ message: 'Server error' });
@@ -50,7 +50,7 @@ export const login = async (req, res) => {
 		const userObj = user.toObject();
 		delete userObj.password;
 
-		return res.json({ user: userObj, token });
+		return res.json({ user: userObj, token,success:true });
 	} catch (err) {
 		console.error(err);
 		return res.status(500).json({ message: 'Server error' });

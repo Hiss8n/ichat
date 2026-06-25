@@ -26,7 +26,7 @@ app.use('/api/contact', contactRoutes);
 connectDB()
   .then(() => {
     server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`Server is now running on port ${PORT}`);
       cronJobs();
     });
   })
