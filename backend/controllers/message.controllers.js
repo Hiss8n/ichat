@@ -1,6 +1,7 @@
 import Message from '../model/Message.js';
 import User from '../model/User.js';
 import Contact from '../model/Contact.js';
+import { io, getSocketIdByUserId } from '../utils/socket.js';
 
 export const sendMessage = async (req, res) => {
     const senderId = req.user && (req.user._id || req.user.id);
@@ -26,6 +27,10 @@ export const sendMessage = async (req, res) => {
 			image: image || null,
 			video: video || null
 		});
+		const getOnlineUserId= getSocketIdByUserId(receiverId);
+		if(getOnlineUserId){
+			io.to(getOnlineUserId).emit('newMessage', message);
+		}
 
         message.save();
 /* 

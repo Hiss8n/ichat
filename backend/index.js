@@ -6,8 +6,9 @@ import authRoutes from './routes/auth.routes.js';
 import messageRoutes from './routes/message.routes.js';
 import contactRoutes from './routes/contact.routes.js';
 import cronJobs from './utils/cron.js';
+import { app, server} from "./utils/socket.js";
 
-const app = express();
+
 
 app.use(cors());
 app.use(express.json());
@@ -24,7 +25,7 @@ app.use('/api/contact', contactRoutes);
 
 connectDB()
   .then(() => {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
       cronJobs();
     });
