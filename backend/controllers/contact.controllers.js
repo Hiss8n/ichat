@@ -5,7 +5,7 @@ import User from '../model/User.js';
 export const addContact = async (req, res) => {
   try {
     const ownerId = req.user && (req.user._id || req.user.id);
-    const { email } = req.body;
+    const { email,name } = req.body;
 
     if (!ownerId) return res.status(401).json({ message: 'Unauthorized' });
     if (!email) return res.status(400).json({ message: 'Email is required' });
@@ -24,7 +24,11 @@ export const addContact = async (req, res) => {
     const exists = await Contact.findOne({ owner: ownerId, email: normalizedEmail });
     if (exists) return res.status(409).json({ message: 'Contact already added' });
 
-    const contact = await Contact.create({ owner: ownerId, email: normalizedEmail });
+    const contact = await Contact.create({
+      owner: ownerId,
+      email: normalizedEmail,
+      name: name || normalizedEmail,
+    });
 
     return res.status(201).json({ contact });
   } catch (err) {
@@ -44,17 +48,12 @@ export const getMyContact = async (req, res) => {
       return res.json({ contacts: null });
     }
 
-    const enriched = await Promise.all(
-      contacts.map(async (c) => {
-        const user = await User.findOne({ email: c.email }).select('name email');
-        return {
-          id: c._id,
-          email: c.email,
-          name: user ? user.name : null,
-          createdAt: c.createdAt
-        };
-      })
-    );
+    const enriched = contacts.map((c) => ({
+      id: c._id,
+      email: c.email,
+      name: c.name || c.email,
+      createdAt: c.createdAt,
+    }));
 
     return res.json({ contacts: enriched });
   } catch (err) {
