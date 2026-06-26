@@ -19,6 +19,8 @@ If you are developing a production application, we recommend using TypeScript wi
 WHAT NEXT 
  1.Create checkingAuthentication to get user from local storage *DONE*
  2.Use the state to redirect the user and the App folder. *DONE*
- 4.Divide the home page into components 
- 5.Implement socket io in the front end and check it
+ 4.Divide the home page into components  *DONE*,
+ 5.fectch contact and complete the selectedUser functionality
+ 6.Implement socket io in the front end and check it
  7.Create the useChatStore to fetch api's
+ 8.Add user frontend interface UI *DONE*
