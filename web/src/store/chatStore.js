@@ -35,12 +35,23 @@ export const chatStore = create((set) => ({
     }
   },
 
-  getContacts: async () => {
+  getMyContacts: async () => {
     set({ isContactLaoding: true });
+     const user = authStore.getState().user;
+    const token = authStore.getState().token;
     try {
-      const response = await fetch(`${BACKEND_URL}/contacts`);
-      const contacts = await response.json();
-      set({ contacts, isContactLaoding: false });
+      const response = await fetch(`${BACKEND_URL}/api/contact/me`,{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          Authorization:`Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+
+     
+      set({ contacts:data.contacts, isContactLaoding: false });
+       
     } catch (error) {
       set({ isContactLaoding: false });
     } finally {

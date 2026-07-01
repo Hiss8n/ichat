@@ -1,68 +1,48 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { chatStore } from '../store/chatStore'
-const initialContacts = [
-  {
-    id: 1,
-    name: 'Alicia',
-    role: 'Product Designer',
-    avatar: 'A',
-    messages: [
-      { id: 1, sender: 'them', text: 'Hi! Are we still on for the demo?' },
-      { id: 2, sender: 'me', text: 'Absolutely. I will share the updated files soon.' },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Daniel',
-    role: 'Frontend Engineer',
-    avatar: 'D',
-    messages: [
-      { id: 1, sender: 'them', text: 'The new layout looks great.' },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Mina',
-    role: 'Project Manager',
-    avatar: 'M',
-    messages: [
-      { id: 1, sender: 'them', text: 'Please review the sprint update.' },
-    ],
-  },
-];
-
+import { authStore } from '../store/authStore';
 
 function ContactList() {
 
+
+  const token = authStore((state) => state.token);
+  const contacts = chatStore((state) => state.contacts);
   const addContact = chatStore((state) => state.addContact);
-     const [contacts, setContacts] = useState(initialContacts);
-      const [selectedContactId, setSelectedContactId] = useState(initialContacts[0].id);
-        const [searchTerm, setSearchTerm] = useState('');
 
-      const filteredContacts = useMemo(() => {
-    const term = searchTerm.toLowerCase();
+   const getMyContacts = chatStore((state) => state. getMyContacts);
 
-    return contacts.filter((contact) => contact.name.toLowerCase().includes(term));
-  }, [contacts, searchTerm]);
+   const [isActive,setIsActive]=useState(false);
 
-  const selectedContact = contacts.find((contact) => contact.id === selectedContactId) || null;
+
+   useEffect(()=>{
+    getMyContacts();
+   },[token])
+
+   console.log("my contact List here:",contacts);
+   const handleAtiveContact=()=>{
+    setIsActive(true);
+
+   }
+
 
   return(
     <div className="flex-1 space-y-2 overflow-y-auto scrollbar-hide">
-            {filteredContacts.map((contact) => {
-              const isActive = contact.id === selectedContactId;
+            {contacts.length>0?contacts.map((contact) => {
+             /*  const isActive = contact.id === selectedContactId; */
+
+             
 
               return (
                 <button
                   key={contact.id}
                   type="button"
-                  onClick={() => setSelectedContactId(contact.id)}
+                  onClick={() => handleAtiveContact}
                   className={`flex w-full items-center rounded-md px-3 py-3 text-left transition ${
                     isActive ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-100'
                   }`}
                 >
                   <div className={`mr-3 flex h-10 w-10 items-center justify-center rounded-full font-semibold ${isActive ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700'}`}>
-                    {contact.avatar}
+                    {contact.name?.charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0">
                     <p className="truncate font-semibold">{contact.name}</p>
@@ -71,8 +51,10 @@ function ContactList() {
                     </p>
                   </div>
                 </button>
-              );
-            })}
+              ); 
+
+            }):(<p>Add you Contacts</p>)}
+
 
           {/*   <main className="flex w-full flex-1 items-center justify-center bg-white p-4 lg:w-3/4 lg:p-8">
           {selectedContact ? (

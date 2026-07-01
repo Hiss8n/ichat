@@ -6,7 +6,8 @@ function AddContact({ onAdd }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const panelRef = useRef(null)
-  const addContact = chatStore((state)=>state.addContact)
+  const addContact = chatStore((state)=>state.addContact);
+   const getMyContacts = chatStore((state) => state. getMyContacts);
 
   useEffect(() => {
     function onKey(e) {
@@ -39,6 +40,7 @@ function AddContact({ onAdd }) {
   
     
     setOpen(false);
+    getMyContacts();
   }
 
   return (

@@ -22,10 +22,8 @@ export const addContact = async (req, res) => {
     // Ensure the contact user exists
     const contactUser = await User.findOne({email:email});
     
-    console.log('all user',contactUser);
+  
    
-
-    
 
     if (!contactUser) return res.status(404).json({ message: 'This contact is not using iChat😢,please invite them.' });
 
