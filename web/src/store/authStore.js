@@ -1,7 +1,5 @@
 import { BACKEND_URL } from '../API/api';
-
-import {create} from 'zustand';
-
+import { create } from 'zustand';
 
 export const authStore = create((set) => ({
   user: null,

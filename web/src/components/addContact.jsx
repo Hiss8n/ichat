@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { chatStore } from '../store/chatStore'
 
 function AddContact({ onAdd }) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const panelRef = useRef(null)
+  const addContact = chatStore((state)=>state.addContact)
 
   useEffect(() => {
     function onKey(e) {
@@ -21,17 +23,22 @@ function AddContact({ onAdd }) {
     setEmail('')
   }
 
-  const handleSubmit = (e) => {
+ /*  const handleSubmit = async(e) => {
     e.preventDefault()
-    if (!name.trim() || !email.trim()) return
-    const newContact = {
-      id: Date.now(),
-      name: name.trim(),
-      email: email.trim(),
-    }
-    console.log("new  contact",newContact);
     if (typeof onAdd === 'function') onAdd(newContact)
     closeModal()
+  } */
+
+  const handleAddContact=async(e)=>{
+
+    e.preventDefault();
+  
+    if (!name.trim() || !email.trim()) return;
+
+    const res=await addContact(name,email);
+  
+    
+    setOpen(false);
   }
 
   return (
@@ -60,7 +67,7 @@ function AddContact({ onAdd }) {
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="mb-4 text-lg font-semibold text-slate-900">Add Contact</h3>
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form  className="space-y-3">
               <div>
                 <label className="mb-1 block text-xs font-medium text-slate-700">Name</label>
                 <input
@@ -91,6 +98,7 @@ function AddContact({ onAdd }) {
                   Cancel
                 </button>
                 <button
+                onClick={handleAddContact}
                   type="submit"
                   className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700"
                 >

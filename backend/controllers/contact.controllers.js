@@ -1,18 +1,33 @@
 import Contact from '../model/Contact.js';
 import User from '../model/User.js';
 
+
 // Add a contact for the authenticated user by email
 export const addContact = async (req, res) => {
   try {
     const ownerId = req.user && (req.user._id || req.user.id);
-    const { email,name } = req.body;
+    const { email, name } = req.body;
+    console.log('entered Email', email);
+    console.log('entered Name', name);
 
-    if (!ownerId) return res.status(401).json({ message: 'Unauthorized' });
-    if (!email) return res.status(400).json({ message: 'Email is required' });
+    if (!ownerId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const normalizedEmail = (email || '').trim().toLowerCase();
+    if (!normalizedEmail) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
 
     // Ensure the contact user exists
-    const contactUser = await User.findOne({ email: email.toLowerCase().trim() });
-    if (!contactUser) return res.status(404).json({ message: 'Contact user not found' });
+    const contactUser = await User.findOne({email:email});
+    
+    console.log('all user',contactUser);
+   
+
+    
+
+    if (!contactUser) return res.status(404).json({ message: 'This contact is not using iChat😢,please invite them.' });
 
     // Prevent adding self as contact
     if (String(contactUser._id) === String(ownerId)) {
@@ -20,7 +35,6 @@ export const addContact = async (req, res) => {
     }
 
     // Prevent duplicate contact entries by email for this owner
-    const normalizedEmail = contactUser.email.toLowerCase().trim();
     const exists = await Contact.findOne({ owner: ownerId, email: normalizedEmail });
     if (exists) return res.status(409).json({ message: 'Contact already added' });
 

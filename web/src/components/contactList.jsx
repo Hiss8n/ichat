@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react'
+import { chatStore } from '../store/chatStore'
 const initialContacts = [
   {
     id: 1,
@@ -32,6 +33,8 @@ const initialContacts = [
 
 
 function ContactList() {
+
+  const addContact = chatStore((state) => state.addContact);
      const [contacts, setContacts] = useState(initialContacts);
       const [selectedContactId, setSelectedContactId] = useState(initialContacts[0].id);
         const [searchTerm, setSearchTerm] = useState('');

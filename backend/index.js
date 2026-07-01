@@ -5,19 +5,21 @@ import connectDB from './utils/db.js';
 import authRoutes from './routes/auth.routes.js';
 import messageRoutes from './routes/message.routes.js';
 import contactRoutes from './routes/contact.routes.js';
+
 import cronJobs from './utils/cron.js';
 import { app, server} from "./utils/socket.js";
 
 
 
-app.use(cors());
+
 app.use(express.json());
+app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
+/* app.get('/', (req, res) => {
   res.json({ message: 'Hello from Express backend!!!' });
-});
+}); */
 
 app.use('/api/auth', authRoutes);
 app.use('/api/message', messageRoutes);

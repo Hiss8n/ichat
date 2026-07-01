@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {authStore} from '../store/authStore.js';
+import { authStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 
 
