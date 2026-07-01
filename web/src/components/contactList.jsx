@@ -27,7 +27,7 @@ function ContactList() {
 
   return(
     <div className="flex-1 space-y-2 overflow-y-auto scrollbar-hide">
-            {contacts.length>0?contacts.map((contact) => {
+            {contacts?.length>=0?contacts.map((contact) => {
              /*  const isActive = contact.id === selectedContactId; */
 
              

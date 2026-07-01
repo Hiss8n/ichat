@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../components/spinner';
 
 
 function SignUp() {
 
   const register = authStore((state) => state.register);
   const navigate =useNavigate();
+  const isCheckingAuth = authStore((state) => state.isCheckingAuth );
+
 
 
 
@@ -42,6 +45,7 @@ function SignUp() {
     
      
   };
+   if(isCheckingAuth) return <Spinner label="Loading chats..." />
 
   return (
     <div className="min-h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">

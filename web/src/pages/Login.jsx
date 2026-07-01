@@ -2,10 +2,15 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authStore } from '../store/authStore';
 
+import Spinner from '../components/spinner';
+
+
 function Login() {
   const navigate =useNavigate();
 
 const login = authStore((state) => state.login);
+const isCheckingAuth = authStore((state) => state.isCheckingAuth );
+
 
 
   const [formData, setFormData] = useState({
@@ -40,6 +45,8 @@ const login = authStore((state) => state.login);
    
 
   }
+
+  if(isCheckingAuth) return <Spinner label="Loading chats..." />
 
   return (
     <div className="min-h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">
