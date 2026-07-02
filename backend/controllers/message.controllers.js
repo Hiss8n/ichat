@@ -47,6 +47,7 @@ export const getMessages = async (req, res) => {
 	try {
 		const me = req.user && (req.user._id || req.user.id);
 		const otherId = req.params.id;
+		console.log("receive",otherId)
 
 		if (!me) return res.status(401).json({ message: 'Unauthorized' });
 		if (!otherId) return res.status(400).json({ message: 'Other user id required' });
@@ -58,8 +59,8 @@ export const getMessages = async (req, res) => {
 			]
 		})
 			.sort({ createdAt: 1 })
-			.populate('sender', 'name email')
-			.populate('receiver', 'name email');
+			.populate('receiver', 'name email')
+			.populate('sender', 'name email');
 
 		if (!messages || messages.length === 0) {
 			return res.json({ messages: null });

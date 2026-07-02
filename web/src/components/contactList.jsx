@@ -17,19 +17,17 @@ function ContactList() {
    const [isActive,setIsActive]=useState(false);
 useEffect(()=>{
   setSelectedContact(selectedContact);
-   getMessages(selectedContact?.id);
+   getMessages(selectedContact?._id);
 
-},[selectedContact]);
+},[selectedContact,selectedContact]);
 
    useEffect(()=>{
     getMyContacts();
    },[token])
 
    const handleActiveContact=(contact)=>{
-   setSelectedContact(contact)
-  getMessages(selectedContact?.id|| contact?.id);
-
-
+   setSelectedContact(contact);
+  getMessages(selectedContact?._id|| contact?.id);
 
    }
   return(

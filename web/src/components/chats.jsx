@@ -8,12 +8,20 @@ import { MessageInput } from './messageInput';
 
 export const Chats = () => {
        const token = authStore((state) => state.token);
+       const user = authStore((state) => state.user);
         const selectedContact = chatStore((state) => state.selectedContact);
         const setSelectedContact = chatStore((state) => state.setSelectedContact);
         const contacts = chatStore((state) => state.contacts);
         const addContact = chatStore((state) => state.addContact);
+        const messages = chatStore((state) => state.messages);
+        const getMyContacts = chatStore((state) => state.getMyContacts);
       
-         const getMyContacts = chatStore((state) => state.getMyContacts);
+       
+
+         console.log('msg',messages);
+         console.log('msgR',messages.receiver?._id);
+         console.log('msgS',messages.sender?._id);
+         console.log('meIdS',user?._id);
       
 
 
@@ -32,15 +40,15 @@ export const Chats = () => {
               </div>
 
               <div className="flex-1 space-y-3 overflow-y-auto rounded-sm bg-slate-50 p-4 scrollbar-hide">
-                {selectedContact.messages?.length > 0 ? (
-                  selectedContact.messages?.map((message) => (
+                {messages?.length > 0 ? (
+                  messages?.map((message) => (
                     <div
                       key={message.id || message._id || `${message.sender}-${message.createdAt}`}
-                      className={`flex ${message.sender !== 'me' ? 'justify-end' : 'justify-start'}`}
+                      className={`flex ${message?.sender?._id === user._id ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
                         className={`max-w-xs rounded-2xl px-4 py-2 text-sm ${
-                          message.sender !== 'me'
+                          message.sender?._id === user._id
                             ? 'bg-blue-600 text-white'
                             : 'bg-white text-slate-700 shadow-sm'
                         }`}

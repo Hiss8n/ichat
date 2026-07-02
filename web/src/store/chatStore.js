@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { BACKEND_URL } from '../API/api';
 import { authStore } from './authStore';
 
-export const chatStore = create((set) => ({
+export const chatStore = create((set,get) => ({
   contacts: [],
   messages: [],
   selectedContact: null,
@@ -37,13 +37,15 @@ export const chatStore = create((set) => ({
   },
   setSelectedContact: (selectedContact) => set({ selectedContact }),
 
-  sendMessage: async (receiverId, payload = {}) => {
+  sendMessage: async ( payload = {}) => {
     const token = authStore.getState().token;
+    const user = authStore.getState().user;
 
-    if (!token || !receiverId) return null;
-
+    const {selectedContact,messages}=get();
+    console.log("this selected",selectedContact);
+    if(!selectedContact||!token ) return;
     try {
-      const response = await fetch(`${BACKEND_URL}/api/message/send/${receiverId}`, {
+      const response = await fetch(`${BACKEND_URL}/api/message/send/${selectedContact._id||selectedContact.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,24 +53,11 @@ export const chatStore = create((set) => ({
         },
         body: JSON.stringify(payload),
       });
-
       const data = await response.json();
-
-      if (data?.message) {
-        set((state) => ({
-          messages: [...state.messages, data.message],
-          selectedContact:
-            state.selectedContact &&
-            (state.selectedContact._id === receiverId || state.selectedContact.id === receiverId)
-              ? {
-                  ...state.selectedContact,
-                  messages: [...(state.selectedContact.messages || []), data.message],
-                }
-              : state.selectedContact,
-        }));
-      }
-
-      return data;
+      console.log('sender $ receiver',selectedContact._id,user._id);
+        set({messages: [...messages, data.message]});
+  
+      return true;
     } catch (error) {
       console.log('Error sending message', error);
       return null;
@@ -99,6 +88,7 @@ export const chatStore = create((set) => ({
     }
   },
   getMessages:async(selectedContactId)=>{
+    if(!selectedContactId) return
   set({isMessageLoading:true})
       const token = authStore.getState().token;
 
@@ -112,9 +102,10 @@ export const chatStore = create((set) => ({
     });
 
     const data= await response.json();
-    console.log("Here are the msgs with the sletec con:",data.messages);
-
-    set({message:data.messages});
+    console.log("rece",selectedContactId)
+  
+    set({messages:data.messages});
+    return true
 
     try {
       

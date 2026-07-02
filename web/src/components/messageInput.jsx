@@ -1,56 +1,51 @@
 import { useState } from 'react';
 import { Paperclip, Send, X } from 'lucide-react';
 import { chatStore } from '../store/chatStore';
+import { authStore } from '../store/authStore';
 
 export const MessageInput = () => {
+     const user = authStore((state) => state.user);
   const [text, setText] = useState('');
   const [mediaFile, setMediaFile] = useState(null);
-  const [mediaType, setMediaType] = useState(null);
   const [isSending, setIsSending] = useState(false);
 
   const selectedContact = chatStore((state) => state.selectedContact);
   const sendMessage = chatStore((state) => state.sendMessage);
+  const getMessages = chatStore((state) => state.getMessages);
 
   const handleMediaChange = (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const isVideo = file.type.startsWith('video/');
+   
     const isImage = file.type.startsWith('image/');
 
-    if (!isImage && !isVideo) return;
+    if (!isImage) return;
 
     const reader = new FileReader();
     reader.onloadend = () => {
       setMediaFile(reader.result);
-      setMediaType(isVideo ? 'video' : 'image');
     };
     reader.readAsDataURL(file);
   };
 
   const handleSend = async () => {
-    if (!selectedContact) return;
-
     const trimmedText = text.trim();
     if (!trimmedText && !mediaFile) return;
-
-    const receiverId = selectedContact._id || selectedContact.id;
     setIsSending(true);
 
     try {
-      const payload = mediaFile
-        ? {
-            text: trimmedText,
-            [mediaType]: mediaFile,
-          }
-        : { text: trimmedText };
-
-        console.log("Here is the message sent",payload);
-
-      await sendMessage(receiverId, payload);
+        const payload={
+            sender:user?._id,
+            receiver:selectedContact?._id || selectedContact?.id,
+            text:text,
+            image:mediaFile,
+            video:null
+        }
+      await sendMessage(payload);
       setText('');
       setMediaFile(null);
-      setMediaType(null);
+     
     } catch (error) {
       console.log('Error sending message from input', error);
     } finally {
@@ -62,6 +57,7 @@ export const MessageInput = () => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       handleSend();
+      getMessages(selectedContact);
     }
   };
 
