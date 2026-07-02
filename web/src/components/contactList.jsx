@@ -10,12 +10,14 @@ function ContactList() {
   const setSelectedContact = chatStore((state) => state.setSelectedContact);
   const contacts = chatStore((state) => state.contacts);
   const addContact = chatStore((state) => state.addContact);
+  const getMessages = chatStore((state) => state.getMessages);
 
   const getMyContacts = chatStore((state) => state.getMyContacts);
 
    const [isActive,setIsActive]=useState(false);
 useEffect(()=>{
   setSelectedContact(selectedContact);
+   getMessages(selectedContact?.id);
 
 },[selectedContact]);
 
@@ -25,11 +27,11 @@ useEffect(()=>{
 
    const handleActiveContact=(contact)=>{
    setSelectedContact(contact)
-    console.log('here is the selected contact',contact);
+  getMessages(selectedContact?.id|| contact?.id);
+
+
 
    }
-
-
   return(
     <div className="flex-1 space-y-2 overflow-y-auto scrollbar-hide">
             {contacts?.length>=0?contacts.map((contact) => {

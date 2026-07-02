@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {MessageCircleQuestionMark} from 'lucide-react';
 import { authStore } from '../store/authStore';
 import { chatStore } from '../store/chatStore';
+import { MessageInput } from './messageInput';
 
 
 
@@ -30,30 +31,43 @@ export const Chats = () => {
                 </div>
               </div>
 
-              <div className="flex-1 space-y-3 overflow-y-auto rounded-2xl bg-slate-50 p-4 scrollbar-hide">
+              <div className="flex-1 space-y-3 overflow-y-auto rounded-sm bg-slate-50 p-4 scrollbar-hide">
                 {selectedContact.messages?.length > 0 ? (
                   selectedContact.messages?.map((message) => (
                     <div
-                      key={message.id}
-                      className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
+                      key={message.id || message._id || `${message.sender}-${message.createdAt}`}
+                      className={`flex ${message.sender !== 'me' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
                         className={`max-w-xs rounded-2xl px-4 py-2 text-sm ${
-                          message.sender === 'me'
+                          message.sender !== 'me'
                             ? 'bg-blue-600 text-white'
                             : 'bg-white text-slate-700 shadow-sm'
                         }`}
                       >
                         {message.text}
+
+                        {message.image ? (
+                          <img src={message.image} alt="sent media" className="mt-2 max-w-full rounded-lg" />
+                        ) : null}
+                        {message.video ? (
+                          <video controls src={message.video} className="mt-2 max-w-full rounded-lg" />
+                        ) : null}
                       </div>
+                      
                     </div>
+                    
                   ))
                 ) : (
                   <div className="flex h-full items-center justify-center text-center text-sm text-slate-500">
                     Start a conversation with {selectedContact.name}.
                   </div>
                 )}
+                
               </div>
+              <MessageInput/>
+
+              
             </div>
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center text-center">
@@ -62,6 +76,7 @@ export const Chats = () => {
               <p className="mt-2 text-sm text-slate-500">Tap a contact to start a conversation.</p>
             </div>
           )}
+         
         </main>
        
   )
