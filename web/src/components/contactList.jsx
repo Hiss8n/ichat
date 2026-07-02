@@ -6,21 +6,26 @@ function ContactList() {
 
 
   const token = authStore((state) => state.token);
+  const selectedContact = chatStore((state) => state.selectedContact);
+  const setSelectedContact = chatStore((state) => state.setSelectedContact);
   const contacts = chatStore((state) => state.contacts);
   const addContact = chatStore((state) => state.addContact);
 
-   const getMyContacts = chatStore((state) => state. getMyContacts);
+  const getMyContacts = chatStore((state) => state.getMyContacts);
 
    const [isActive,setIsActive]=useState(false);
+useEffect(()=>{
+  setSelectedContact(selectedContact);
 
+},[selectedContact]);
 
    useEffect(()=>{
     getMyContacts();
    },[token])
 
-   console.log("my contact List here:",contacts);
-   const handleAtiveContact=()=>{
-    setIsActive(true);
+   const handleActiveContact=(contact)=>{
+   setSelectedContact(contact)
+    console.log('here is the selected contact',contact);
 
    }
 
@@ -28,15 +33,12 @@ function ContactList() {
   return(
     <div className="flex-1 space-y-2 overflow-y-auto scrollbar-hide">
             {contacts?.length>=0?contacts.map((contact) => {
-             /*  const isActive = contact.id === selectedContactId; */
-
-             
-
+              const isActive = contact.id === selectedContact?.id;
               return (
                 <button
                   key={contact.id}
                   type="button"
-                  onClick={() => handleAtiveContact}
+                  onClick={() => handleActiveContact(contact)}
                   className={`flex w-full items-center rounded-md px-3 py-3 text-left transition ${
                     isActive ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-100'
                   }`}

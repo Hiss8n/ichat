@@ -34,6 +34,7 @@ export const chatStore = create((set) => ({
       console.log('Error occured adding contact', error);
     }
   },
+  setSelectedContact: (selectedContact) => set({selectedContact}),
 
   getMyContacts: async () => {
     set({ isContactLaoding: true });

@@ -1,42 +1,19 @@
 import React, { useState } from 'react'
 import {MessageCircleQuestionMark} from 'lucide-react';
+import { authStore } from '../store/authStore';
+import { chatStore } from '../store/chatStore';
 
-const initialContacts = [
-  {
-    id: 1,
-    name: 'Alicia',
-    role: 'Product Designer',
-    avatar: 'A',
-    messages: [
-      { id: 1, sender: 'them', text: 'Hi! Are we still on for the demo?' },
-      { id: 2, sender: 'me', text: 'Absolutely. I will share the updated files soon.' },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Daniel',
-    role: 'Frontend Engineer',
-    avatar: 'D',
-    messages: [
-      { id: 1, sender: 'them', text: 'The new layout looks great.' },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Mina',
-    role: 'Project Manager',
-    avatar: 'M',
-    messages: [
-      { id: 1, sender: 'them', text: 'Please review the sprint update.' },
-    ],
-  },
-];
 
 
 export const Chats = () => {
-       const [contacts, setContacts] = useState(initialContacts);
-          const [selectedContactId, setSelectedContactId] = useState(null);
- const selectedContact = contacts.find((contact) => contact.id === selectedContactId) || null;
+       const token = authStore((state) => state.token);
+        const selectedContact = chatStore((state) => state.selectedContact);
+        const setSelectedContact = chatStore((state) => state.setSelectedContact);
+        const contacts = chatStore((state) => state.contacts);
+        const addContact = chatStore((state) => state.addContact);
+      
+         const getMyContacts = chatStore((state) => state.getMyContacts);
+      
 
 
   return (
@@ -45,7 +22,7 @@ export const Chats = () => {
             <div className="flex h-full w-full flex-col">
               <div className="mb-4 flex items-center border-b border-slate-200 pb-4">
                 <div className="mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-700">
-                  {selectedContact.avatar}
+                  {selectedContact?.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-slate-900">{selectedContact.name}</h2>
@@ -54,8 +31,8 @@ export const Chats = () => {
               </div>
 
               <div className="flex-1 space-y-3 overflow-y-auto rounded-2xl bg-slate-50 p-4 scrollbar-hide">
-                {selectedContact.messages.length > 0 ? (
-                  selectedContact.messages.map((message) => (
+                {selectedContact.messages?.length > 0 ? (
+                  selectedContact.messages?.map((message) => (
                     <div
                       key={message.id}
                       className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
