@@ -44,8 +44,9 @@ export const chatStore = create((set,get) => ({
     const {selectedContact,messages}=get();
     console.log("this selected",selectedContact);
     if(!selectedContact||!token ) return;
+    const id=selectedContact._id||selectedContact.id
     try {
-      const response = await fetch(`${BACKEND_URL}/api/message/send/${selectedContact._id||selectedContact.id}`, {
+      const response = await fetch(`${BACKEND_URL}/api/message/send/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,13 +88,16 @@ export const chatStore = create((set,get) => ({
       set({ isContactLaoding: false });
     }
   },
-  getMessages:async(selectedContactId)=>{
-    if(!selectedContactId) return
-  set({isMessageLoading:true})
+  getMessages:async()=>{
+    const {selectedContact,messages}=get();
+   
       const token = authStore.getState().token;
-
-    if (!token || !selectedContactId) return null;
-    const response=await fetch(`${BACKEND_URL}/api/message/${selectedContactId}`,{
+    if(!selectedContact||!token ) return;
+    const id=selectedContact._id||selectedContact.id
+  set({isMessageLoading:true});
+    try {
+      
+    const response=await fetch(`${BACKEND_URL}/api/message/${id}`,{
       method:'GET',
       headers:{
         'Content-Type':'application/json',
@@ -102,13 +106,8 @@ export const chatStore = create((set,get) => ({
     });
 
     const data= await response.json();
-    console.log("rece",selectedContactId)
-  
     set({messages:data.messages});
     return true
-
-    try {
-      
     } catch (error) {
       console.log('Something went wrong',error)
       

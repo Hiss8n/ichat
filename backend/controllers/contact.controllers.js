@@ -20,10 +20,7 @@ export const addContact = async (req, res) => {
     }
 
     // Ensure the contact user exists
-    const contactUser = await User.findOne({email:email});
-    
-  
-   
+    const contactUser = await User.findOne({ email: normalizedEmail });
 
     if (!contactUser) return res.status(404).json({ message: 'This contact is not using iChat😢,please invite them.' });
 
@@ -32,14 +29,15 @@ export const addContact = async (req, res) => {
       return res.status(400).json({ message: 'Cannot add yourself as a contact' });
     }
 
-    // Prevent duplicate contact entries by email for this owner
-    const exists = await Contact.findOne({ owner: ownerId, email: normalizedEmail });
+    // Prevent duplicate contact entries for this owner
+    const exists = await Contact.findOne({ owner: ownerId, _id: contactUser._id });
     if (exists) return res.status(409).json({ message: 'Contact already added' });
 
     const contact = await Contact.create({
+      _id: contactUser._id,
       owner: ownerId,
-      email: normalizedEmail,
-      name: name || normalizedEmail,
+      email: contactUser.email,
+      name: name|| contactUser.email,
     });
 
     return res.status(201).json({ contact });

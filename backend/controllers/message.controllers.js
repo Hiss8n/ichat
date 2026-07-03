@@ -14,12 +14,11 @@ export const sendMessage = async (req, res) => {
 		if (!senderId) return res.status(401).json({ message: 'Unauthorized' });
 		if (!receiverId) return res.status(400).json({ message: 'Receiver id required' });
 
-		const receiver = await Contact.findById(receiverId);
-		if (!receiver) return res.status(404).json({ message: 'Receiver not found' });
+		// Try to resolve receiver as a Contact first, then as a User
+		const contactReceiver = await User.findById(receiverId);
+		if(!contactReceiver) return res.status(400).json({ message: 'This contact is not using iChat,INVITE!' });
 
-		// Ensure the receiver is in sender's contact list
-		const isContact = await Contact.findOne({ owner: senderId, email: receiver.email });
-		if (!isContact) return res.status(403).json({ message: 'You can only message users in your contacts' });
+	
 		const message = await Message.create({
 			sender: senderId,
 			receiver: receiverId,
@@ -27,15 +26,15 @@ export const sendMessage = async (req, res) => {
 			image: image || null,
 			video: video || null
 		});
-		const getOnlineUserId= getSocketIdByUserId(receiverId);
-		if(getOnlineUserId){
-			io.to(getOnlineUserId).emit('newMessage', message);
+
+		// If the receiver maps to a registered user, emit the message to their socket
+		const targetUserId = userReceiver ? (userReceiver._id || userReceiver.id) : null;
+		const socketId = targetUserId ? getSocketIdByUserId(String(targetUserId)) : null;
+		if (socketId) {
+			io.to(socketId).emit('newMessage', message);
 		}
 
-        message.save();
-/* 
-		const populated = await message.populate('sender', 'name email').populate('receiver', 'name email');
- */
+
 		return res.status(201).json({ message });
 	} catch (err) {
 		console.error('sendMessage error:', err);
@@ -47,7 +46,9 @@ export const getMessages = async (req, res) => {
 	try {
 		const me = req.user && (req.user._id || req.user.id);
 		const otherId = req.params.id;
-		console.log("receive",otherId)
+		console.log("receiver",otherId)
+
+	/* 	const mySelf=await Contact.find{_id:{}} */
 
 		if (!me) return res.status(401).json({ message: 'Unauthorized' });
 		if (!otherId) return res.status(400).json({ message: 'Other user id required' });
@@ -55,16 +56,17 @@ export const getMessages = async (req, res) => {
 		const messages = await Message.find({
 			$or: [
 				{ sender: me, receiver: otherId },
-				{ sender: otherId, receiver: me }
+				 { sender: otherId, receiver: me } 
 			]
 		})
 			.sort({ createdAt: 1 })
-			.populate('receiver', 'name email')
-			.populate('sender', 'name email');
+			.populate('receiver', 'name email owner')
+			.populate('sender', 'name email owner');
 
 		if (!messages || messages.length === 0) {
 			return res.json({ messages: null });
 		}
+		
 
 		return res.json({ messages });
 	} catch (err) {

@@ -57,7 +57,7 @@ export const MessageInput = () => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       handleSend();
-      getMessages(selectedContact);
+       getMessages(selectedContact?._id);
     }
   };
 

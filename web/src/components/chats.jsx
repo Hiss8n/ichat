@@ -19,9 +19,7 @@ export const Chats = () => {
        
 
          console.log('msg',messages);
-         console.log('msgR',messages.receiver?._id);
-         console.log('msgS',messages.sender?._id);
-         console.log('meIdS',user?._id);
+       
       
 
 
