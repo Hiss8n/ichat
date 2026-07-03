@@ -27,7 +27,7 @@ WHAT NEXT
  6. Implement socket io in the front end and check it
  7. Create the useChatStore to fetch api's *DONE*
  8. Add user frontend interface UI *DONE*
- 9. Get the messages from backend
+ 9. Get the messages from backend *DONE*
  10. Besy practices and optimisation
  11. Host the backend
 

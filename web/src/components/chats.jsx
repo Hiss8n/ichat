@@ -3,6 +3,7 @@ import {MessageCircleQuestionMark} from 'lucide-react';
 import { authStore } from '../store/authStore';
 import { chatStore } from '../store/chatStore';
 import { MessageInput } from './messageInput';
+import { useEffect } from 'react';
 
 
 
@@ -24,6 +25,10 @@ export const Chats = () => {
        
 
          const me=user?.email || user.email
+
+         useEffect(()=>{
+          token && setSelectedContact(null);
+         },[token]);
     
        
       
