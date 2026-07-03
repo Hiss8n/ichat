@@ -42,11 +42,11 @@ export const chatStore = create((set,get) => ({
     const user = authStore.getState().user;
 
     const {selectedContact,messages}=get();
-    console.log("this selected",selectedContact);
+  
     if(!selectedContact||!token ) return;
-    const id=selectedContact._id||selectedContact.id
+    const email=selectedContact?.email
     try {
-      const response = await fetch(`${BACKEND_URL}/api/message/send/${id}`, {
+      const response = await fetch(`${BACKEND_URL}/api/message/send/${email}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,13 +55,13 @@ export const chatStore = create((set,get) => ({
         body: JSON.stringify(payload),
       });
       const data = await response.json();
-      console.log('sender $ receiver',selectedContact._id,user._id);
-        set({messages: [...messages, data.message]});
+     
+        set({messages:messages!==null? [...messages, data.message]:[data.messages]});
   
       return true;
     } catch (error) {
       console.log('Error sending message', error);
-      return null;
+      
     }
   },
 
@@ -93,11 +93,11 @@ export const chatStore = create((set,get) => ({
    
       const token = authStore.getState().token;
     if(!selectedContact||!token ) return;
-    const id=selectedContact._id||selectedContact.id
+    const email=selectedContact.email
   set({isMessageLoading:true});
     try {
       
-    const response=await fetch(`${BACKEND_URL}/api/message/${id}`,{
+    const response=await fetch(`${BACKEND_URL}/api/message/${email}`,{
       method:'GET',
       headers:{
         'Content-Type':'application/json',

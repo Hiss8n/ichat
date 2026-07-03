@@ -15,10 +15,16 @@ export const Chats = () => {
         const addContact = chatStore((state) => state.addContact);
         const messages = chatStore((state) => state.messages);
         const getMyContacts = chatStore((state) => state.getMyContacts);
+
+        
+
+
+        console.log("All messages",messages)
       
        
 
-         console.log('msg',messages);
+         const me=user?.email || user.email
+    
        
       
 
@@ -41,23 +47,23 @@ export const Chats = () => {
                 {messages?.length > 0 ? (
                   messages?.map((message) => (
                     <div
-                      key={message.id || message._id || `${message.sender}-${message.createdAt}`}
-                      className={`flex ${message?.sender?._id === user._id ? 'justify-end' : 'justify-start'}`}
+                      key={message?.id || message?._id || `${message?.sender}-${message?.createdAt}`}
+                      className={`flex ${message?.sender === me ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
                         className={`max-w-xs rounded-2xl px-4 py-2 text-sm ${
-                          message.sender?._id === user._id
+                          message?.sender=== me
                             ? 'bg-blue-600 text-white'
                             : 'bg-white text-slate-700 shadow-sm'
                         }`}
                       >
-                        {message.text}
+                        {message?.text}
 
-                        {message.image ? (
-                          <img src={message.image} alt="sent media" className="mt-2 max-w-full rounded-lg" />
+                        {message?.image ? (
+                          <img src={message?.image} alt="sent media" className="mt-2 max-w-full rounded-lg" />
                         ) : null}
-                        {message.video ? (
-                          <video controls src={message.video} className="mt-2 max-w-full rounded-lg" />
+                        {message?.video ? (
+                          <video controls src={message?.video} className="mt-2 max-w-full rounded-lg" />
                         ) : null}
                       </div>
                       

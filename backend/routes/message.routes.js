@@ -5,9 +5,9 @@ import protectedRoute from '../middleware/auth.middleware.js';
 const router = Router();
 
 // Send a message to user with id in params
-router.post('/send/:id', protectedRoute, sendMessage);
+router.post('/send/:email', protectedRoute, sendMessage);
 
 // Get messages between authenticated user and user with id in params
-router.get('/:id', protectedRoute, getMessages);
+router.get('/:email', protectedRoute, getMessages);
 
 export default router;

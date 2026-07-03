@@ -6,6 +6,7 @@ const { Schema, model } = mongoose;
 const contactSchema = new Schema(
   {
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    userRefId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     email: { type: String, required: true, trim: true, lowercase: true },
     name: { type: String, trim: true, default: function () { return this.email; } },
   },

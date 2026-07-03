@@ -36,8 +36,8 @@ export const MessageInput = () => {
 
     try {
         const payload={
-            sender:user?._id,
-            receiver:selectedContact?._id || selectedContact?.id,
+            sender:user?.email,
+            receiver:selectedContact?.email,
             text:text,
             image:mediaFile,
             video:null

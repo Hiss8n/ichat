@@ -5,31 +5,34 @@ import { io, getSocketIdByUserId } from '../utils/socket.js';
 
 export const sendMessage = async (req, res) => {
     const senderId = req.user && (req.user._id || req.user.id);
-		const receiverId = req.params.id;
+		const receiverEmail = req.params.email;
 		const { text, image, video } = req.body;
        
 	try {
 		
 
+		const user=await User.findById(senderId);
+
 		if (!senderId) return res.status(401).json({ message: 'Unauthorized' });
-		if (!receiverId) return res.status(400).json({ message: 'Receiver id required' });
+		if (!receiverEmail) return res.status(400).json({ message: 'Receiver id required' });
 
 		// Try to resolve receiver as a Contact first, then as a User
-		const contactReceiver = await User.findById(receiverId);
+	
+		const contactReceiver = await User.find({email:receiverEmail});
 		if(!contactReceiver) return res.status(400).json({ message: 'This contact is not using iChat,INVITE!' });
 
 	
 		const message = await Message.create({
-			sender: senderId,
-			receiver: receiverId,
+			sender: user.email,
+			receiver: receiverEmail,
 			text: text || '',
 			image: image || null,
 			video: video || null
 		});
 
 		// If the receiver maps to a registered user, emit the message to their socket
-		const targetUserId = userReceiver ? (userReceiver._id || userReceiver.id) : null;
-		const socketId = targetUserId ? getSocketIdByUserId(String(targetUserId)) : null;
+		
+		const socketId = getSocketIdByUserId(String(contactReceiver._id)) 
 		if (socketId) {
 			io.to(socketId).emit('newMessage', message);
 		}
@@ -45,18 +48,19 @@ export const sendMessage = async (req, res) => {
 export const getMessages = async (req, res) => {
 	try {
 		const me = req.user && (req.user._id || req.user.id);
-		const otherId = req.params.id;
-		console.log("receiver",otherId)
+		const email = req.params.email;
+	
 
 	/* 	const mySelf=await Contact.find{_id:{}} */
 
 		if (!me) return res.status(401).json({ message: 'Unauthorized' });
-		if (!otherId) return res.status(400).json({ message: 'Other user id required' });
+		const user=await User.findById(me)
+		if (!email) return res.status(400).json({ message: 'Other user id required' });
 
 		const messages = await Message.find({
 			$or: [
-				{ sender: me, receiver: otherId },
-				 { sender: otherId, receiver: me } 
+				{ sender: user.email, receiver: email },
+				 { sender: email, receiver: user.email } 
 			]
 		})
 			.sort({ createdAt: 1 })

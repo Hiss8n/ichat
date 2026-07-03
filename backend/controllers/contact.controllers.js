@@ -7,9 +7,7 @@ export const addContact = async (req, res) => {
   try {
     const ownerId = req.user && (req.user._id || req.user.id);
     const { email, name } = req.body;
-    console.log('entered Email', email);
-    console.log('entered Name', name);
-
+    
     if (!ownerId) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -22,22 +20,29 @@ export const addContact = async (req, res) => {
     // Ensure the contact user exists
     const contactUser = await User.findOne({ email: normalizedEmail });
 
-    if (!contactUser) return res.status(404).json({ message: 'This contact is not using iChat😢,please invite them.' });
+    if (!contactUser) return res.status(404).json({ message: 'This contact is not using iChat,please invite them.' });
 
     // Prevent adding self as contact
     if (String(contactUser._id) === String(ownerId)) {
       return res.status(400).json({ message: 'Cannot add yourself as a contact' });
     }
 
-    // Prevent duplicate contact entries for this owner
-    const exists = await Contact.findOne({ owner: ownerId, _id: contactUser._id });
-    if (exists) return res.status(409).json({ message: 'Contact already added' });
+    // Prevent duplicate contact entries for this owner (by userRefId or email)
+    const duplicate = await Contact.findOne({
+      owner: ownerId,
+      $or: [
+        { userRefId: contactUser._id },
+        { email: normalizedEmail }
+      ]
+    });
+
+    if (duplicate) return res.status(409).json({ message: 'Contact already added' });
 
     const contact = await Contact.create({
-      _id: contactUser._id,
+      userRefId: contactUser._id,
       owner: ownerId,
       email: contactUser.email,
-      name: name|| contactUser.email,
+      name: name ? name.trim() : contactUser.name || contactUser.email,
     });
 
     return res.status(201).json({ contact });

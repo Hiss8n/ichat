@@ -17,7 +17,7 @@ function ContactList() {
    const [isActive,setIsActive]=useState(false);
 useEffect(()=>{
   setSelectedContact(selectedContact);
-   getMessages(selectedContact?._id);
+   getMessages(selectedContact?.email);
 
 },[selectedContact,selectedContact]);
 
@@ -27,7 +27,7 @@ useEffect(()=>{
 
    const handleActiveContact=(contact)=>{
    setSelectedContact(contact);
-  getMessages(selectedContact?._id|| contact?.id);
+  getMessages(selectedContact?.email|| contact?.email);
 
    }
   return(
