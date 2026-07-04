@@ -99,6 +99,7 @@ export const authStore = create((set,get) => ({
       console.log('cannot log out now', error);
     }
   },
+  
   connectSocket:(user)=>{
     if(!user ||get().socket?.connected) return;
 

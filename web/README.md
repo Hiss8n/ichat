@@ -30,5 +30,6 @@ WHAT NEXT
  9. Get the messages from backend *DONE*
  10. Besy practices and optimisation
  11. Host the backend
+ 12. Remove user id in `.socket disconnetion`
 
  // URL=mongodb+srv://Hassoon:Hassoon123@cluster0.dvy3g9y.mongodb.net/ichat_db778?appName=Cluster0989 //
