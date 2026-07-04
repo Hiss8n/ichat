@@ -11,8 +11,15 @@ function ContactList() {
   const contacts = chatStore((state) => state.contacts);
   const addContact = chatStore((state) => state.addContact);
   const getMessages = chatStore((state) => state.getMessages);
-
   const getMyContacts = chatStore((state) => state.getMyContacts);
+  const onlineUsers=authStore((state)=>state.onlineUsers);
+
+
+  console.log("Online Users:",onlineUsers)
+
+
+/*   const isIncluded = users.some(user => targetIds.includes(user.id)); */
+
 
    const [isActive,setIsActive]=useState(false);
 useEffect(()=>{
@@ -34,6 +41,9 @@ useEffect(()=>{
     <div className="flex-1 space-y-2 overflow-y-auto scrollbar-hide">
             {contacts?.length>=0?contacts.map((contact) => {
               const isActive = contact.id === selectedContact?.id;
+              const isOnline = onlineUsers.includes(contact.id.toString());
+              
+
               return (
                 <button
                   key={contact.id}
@@ -43,14 +53,18 @@ useEffect(()=>{
                     isActive ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-100'
                   }`}
                 >
-                  <div className={`mr-3 flex h-10 w-10 items-center justify-center rounded-full font-semibold ${isActive ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700'}`}>
-                    {contact.name?.charAt(0).toUpperCase()}
+                  <div className="relative mr-3">
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-full font-semibold ${isActive ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-700'}`}>
+                      {contact.name?.charAt(0).toUpperCase()}
+                    </div>
+                    {isOnline && (
+                      <span className="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-green-500" title="Online" />
+                    )}
                   </div>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold">{contact.name}</p>
-                    <p className={`truncate text-sm ${isActive ? 'text-blue-100' : 'text-slate-500'}`}>
-                      {contact.role}
-                    </p>
+                    <p>{contact.id.toString()}</p>
+    
                   </div>
                 </button>
               ); 

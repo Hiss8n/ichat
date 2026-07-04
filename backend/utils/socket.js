@@ -5,8 +5,13 @@ import express from 'express';
 
 const app = express();
 const server = http.createServer(app);
+const allowedOrigns=process.env.FRONTEND_URL;
 
-const io =new Server(server,{origin: '*',methods: ['GET','POST']});
+const io =new Server(server,{cors: {
+    origin: allowedOrigns,
+    methods: ["GET", "POST"],
+    credentials: true
+  }});
 
 const usersSocketMap={};
 
