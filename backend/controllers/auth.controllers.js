@@ -59,6 +59,16 @@ export const login = async (req, res) => {
 	}
 };
 
+export const getAllUsers = async (req, res) => {
+	try {
+		const users = await User.find({}).select('-password');
+		return res.status(200).json({ users, success: true });
+	} catch (err) {
+		console.error(err);
+		return res.status(500).json({ message: 'Server error' });
+	}
+};
+
 export const logout = async (req, res) => {
 	// With JWT stateless tokens, logout is handled client-side by discarding the token.
 	// Optionally implement token revocation/blacklist if needed.

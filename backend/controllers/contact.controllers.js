@@ -66,6 +66,7 @@ export const getMyContact = async (req, res) => {
     const enriched = contacts.map((c) => ({
       id: c._id,
       email: c.email,
+      userId:c.userRefId,
       name: c.name || c.email,
       createdAt: c.createdAt,
     }));

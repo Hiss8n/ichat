@@ -78,10 +78,7 @@ export const chatStore = create((set,get) => ({
         }
       });
       const data = await response.json();
-
-     
       set({ contacts:data.contacts, isContactLaoding: false });
-       
     } catch (error) {
       set({ isContactLaoding: false });
     } finally {
@@ -90,8 +87,7 @@ export const chatStore = create((set,get) => ({
   },
   getMessages:async()=>{
     const {selectedContact,messages}=get();
-   
-      const token = authStore.getState().token;
+    const token = authStore.getState().token;
     if(!selectedContact||!token ) return;
     const email=selectedContact.email
   set({isMessageLoading:true});
@@ -109,7 +105,7 @@ export const chatStore = create((set,get) => ({
     set({messages:data.messages});
     return true
     } catch (error) {
-      console.log('Something went wrong',error)
+      console.log('Something went wrong',error);
       
     } finally{
       set({isMessageLoading:false});

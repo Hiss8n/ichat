@@ -7,6 +7,7 @@ function ContactList() {
 
   const token = authStore((state) => state.token);
   const user = authStore((state) => state.user);
+  const users = authStore((state) => state.users);
   const selectedContact = chatStore((state) => state.selectedContact);
   const setSelectedContact = chatStore((state) => state.setSelectedContact);
   const contacts = chatStore((state) => state.contacts);
@@ -16,13 +17,13 @@ function ContactList() {
   const onlineUsers=authStore((state)=>state.onlineUsers);
 
 
-  console.log("Online Users:",onlineUsers)
+  console.log("Online Users arr:",onlineUsers);
+  console.log('My cont:',contacts)
+  console.log('Reg users',user.email);
 
-const isOn = onlineUsers.includes(user._id);
 
-const getOn=(id)=>{
-  return onlineUsers.includes(id)
-}
+
+
 
 
    const [isActive,setIsActive]=useState(false);
@@ -45,7 +46,9 @@ useEffect(()=>{
     <div className="flex-1 space-y-2 overflow-y-auto scrollbar-hide">
             {contacts?.length>=0?contacts.map((contact) => {
               const isActive = contact.id === selectedContact?.id;
-              const isOnline = getOn(contact.id);
+            /*   const isOnline = getOn(contact.id); */
+             const isOnline = onlineUsers.includes(contact?.userId);
+             
               
 
               return (
@@ -67,6 +70,7 @@ useEffect(()=>{
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold">{contact.name}</p>
+                    <p className='text-sm'>{contact?.email}</p>
                    
     
                   </div>

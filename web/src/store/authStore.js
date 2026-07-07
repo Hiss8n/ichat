@@ -6,6 +6,7 @@ import {io} from "socket.io-client"
 export const authStore = create((set,get) => ({
   user: null,
   token: null,
+  users:[],
   checkingAuth: true,
   socket:null,
   onlineUsers:[],
@@ -98,6 +99,27 @@ export const authStore = create((set,get) => ({
     } catch (error) {
       console.log('cannot log out now', error);
     }
+  },
+  getUsers:async()=>{
+    set({checkingAuth:true});
+    const {token}=get()
+    try{
+      const response= await fetch(`${BACKEND_URL}/api/auth/users`,{
+        method:'GET',
+        headers:{
+          'Content-Type':'application/json',
+          Authorisation:`Bearer ${token}`
+        }
+      })
+      const data=await response.json()
+      set({users:data.users,checkAuth:false})
+
+    }catch(error){
+      console.log('Error getting my users',error)
+    }finally{
+      set({checkAuth:false});
+    }
+
   },
   
   connectSocket:(user)=>{

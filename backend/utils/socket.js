@@ -19,7 +19,6 @@ const getSocketIdByUserId = (userId) => {
   return usersSocketMap[userId];
 }
 
-
 io.on('connection', (socket) => {
 
     const userId = socket.handshake.query.userId;
@@ -27,13 +26,9 @@ io.on('connection', (socket) => {
 
   if(userId) usersSocketMap[userId] = socket.id;
   io.emit('onlineUsers', Object.keys(usersSocketMap));
-  io.on('disconnection', () => {
-    console.log('A user disconnected with userId:', userId);
-    if(userId) delete usersSocketMap[userId];
-    io.emit('onlineUsers', Object.keys(usersSocketMap));
-  });
 
-  socket.on('disconnection', () => {
+
+  socket.on('disconnect', () => {
     console.log('A user disconnected with userId:', userId);
     if(userId) delete usersSocketMap[userId];
     io.emit('onlineUsers', Object.keys(usersSocketMap));
