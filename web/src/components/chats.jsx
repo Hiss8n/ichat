@@ -17,14 +17,7 @@ export const Chats = () => {
         const messages = chatStore((state) => state.messages);
         const getMyContacts = chatStore((state) => state.getMyContacts);
 
-        
-
-
-        console.log("All messages",messages)
-      
-       
-
-         const me=user?.email || user.email
+         const me=user?._id || user.id
 
          useEffect(()=>{
           token && setSelectedContact(null);

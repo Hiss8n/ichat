@@ -17,19 +17,17 @@ function ContactList() {
   const onlineUsers=authStore((state)=>state.onlineUsers);
 
 
-  console.log("Online Users arr:",onlineUsers);
-  console.log('My cont:',contacts)
-  console.log('Reg users',user.email);
+ /*  console.log("Online Users arr:",onlineUsers); */
+  console.log('My contact:',contacts); 
+ /*  console.log('Reg users',user.email); */
+ console.log("selectooo:",selectedContact);
 
 
+const [isActive,setIsActive]=useState(false);
 
-
-
-
-   const [isActive,setIsActive]=useState(false);
 useEffect(()=>{
   setSelectedContact(selectedContact);
-   getMessages(selectedContact?.email);
+  /*  getMessages(selectedContact?.userId); */
 
 },[selectedContact,selectedContact]);
 
@@ -38,8 +36,9 @@ useEffect(()=>{
    },[token])
 
    const handleActiveContact=(contact)=>{
+  
    setSelectedContact(contact);
-  getMessages(selectedContact?.email|| contact?.email);
+  getMessages(selectedContact?.userId|| contact?.userId);
 
    }
   return(

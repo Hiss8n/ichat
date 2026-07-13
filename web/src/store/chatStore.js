@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { BACKEND_URL } from '../API/api';
 import { authStore } from './authStore';
+import { Socket } from 'socket.io-client';
 
 export const chatStore = create((set,get) => ({
   contacts: [],
@@ -29,7 +30,6 @@ export const chatStore = create((set,get) => ({
       });
 
       const data = await response.json();
-      console.log('added contact', data);
       return data;
     } catch (error) {
       console.log('Error occured adding contact', error);
@@ -44,9 +44,9 @@ export const chatStore = create((set,get) => ({
     const {selectedContact,messages}=get();
   
     if(!selectedContact||!token ) return;
-    const email=selectedContact?.email
+    const userId=selectedContact?.userId;
     try {
-      const response = await fetch(`${BACKEND_URL}/api/message/send/${email}`, {
+      const response = await fetch(`${BACKEND_URL}/api/message/send/${userId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,11 +89,11 @@ export const chatStore = create((set,get) => ({
     const {selectedContact,messages}=get();
     const token = authStore.getState().token;
     if(!selectedContact||!token ) return;
-    const email=selectedContact.email
+    const userId=selectedContact.userId
   set({isMessageLoading:true});
     try {
       
-    const response=await fetch(`${BACKEND_URL}/api/message/${email}`,{
+    const response=await fetch(`${BACKEND_URL}/api/message/${userId}`,{
       method:'GET',
       headers:{
         'Content-Type':'application/json',
@@ -102,7 +102,7 @@ export const chatStore = create((set,get) => ({
     });
 
     const data= await response.json();
-    set({messages:data.messages});
+    set({...messages,messages:data.messages});
     return true
     } catch (error) {
       console.log('Something went wrong',error);
@@ -110,5 +110,17 @@ export const chatStore = create((set,get) => ({
     } finally{
       set({isMessageLoading:false});
     }
+  },
+  subscribeToMessages:async(userId)=>{
+    if (!userId) return;
+    const socket=authStore.getState().socket;
+    socket.off("newMessage");
+    socket.on("newMessage",(newMessage)=>{
+      console.log('instant Msg',newMessage);
+      if(String(newMessage.sender)!==String(userId)) return;
+      set({messages:[...get().messages,newMessage]});
+      get().getMyContacts();
+    })
+    
   }
 }));

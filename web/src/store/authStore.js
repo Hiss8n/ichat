@@ -1,6 +1,7 @@
 import { BACKEND_URL } from '../API/api';
 import { create } from 'zustand';
 import {io} from "socket.io-client"
+import { chatStore } from './chatStore';
 
 
 export const authStore = create((set,get) => ({
@@ -48,7 +49,6 @@ export const authStore = create((set,get) => ({
       const storedUser = localStorage.getItem('user');
       const myUser=JSON.parse(storedUser)
       set({ user: myUser, token: storedToken });
-      console.log("here is the user:",myUser);
       get().connectSocket(myUser);
        set({ checkingAuth: false });
       return Boolean(storedToken);
@@ -123,16 +123,31 @@ export const authStore = create((set,get) => ({
   },
   
   connectSocket:(user)=>{
+
     if(!user ||get().socket?.connected) return;
+    const socket=io(BACKEND_URL,{query:{userId:user._id}})
+     //send message via socket io
 
-    const socket=io(BACKEND_URL,{query:{userId:user._id}});
-    set({socket});
+  socket.on('newMessage', (message) => {
+    const { selectedUser, getMessages } = chatStore.getState();
 
+  if (
+    selectedUser &&
+    (message.sender === selectedUser.userId ||
+     message.receiver === selectedUser._id)
+  ) {
+    getMessages(message);
+  }
+});
+
+//get Online Users Instantly
     socket.on('onlineUsers',(userIds)=>{
       set({ onlineUsers:userIds});
     })
+      set({socket});
 
   },
+
   dissconnectSocket:()=>{
     const socket=get().socket;
     if(socket?.connected) socket.disconnect();
