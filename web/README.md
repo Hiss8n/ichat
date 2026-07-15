@@ -24,12 +24,12 @@ WHAT NEXT
   a. and complete the selectedUser functionality*DONE*
   b. Chat input interface set up*DOENE*
   c. Create a chat with a user and send data to the backend*DONE*
- 6. Implement socket io in the front end `and check it`
+ 6. Implement socket io in the front end `and check it` *DUSTED*
  7. Create the useChatStore to fetch api's *DONE*
  8. Add user frontend interface UI *DONE*
  9. Get the messages from backend *DONE*
  10. BesT practices and optimisation
- 11. Host the backend
+ 11. Host the backend ##`PRIOR`
  12. Remove user id in `.socket disconnet` *DONE*,
  13. Instant message with socket io *DONE*, HAHAHA!!
 
