@@ -5,6 +5,12 @@ import { chatStore } from '../store/chatStore';
 import { MessageInput } from './messageInput';
 import { useEffect } from 'react';
 
+const formatTime = (timestamp) => {
+  if (!timestamp) return '';
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
+
 export const Chats = () => {
        const token = authStore((state) => state.token);
        const user = authStore((state) => state.user);
@@ -27,13 +33,7 @@ export const Chats = () => {
            subscribeToMessages(selectedContact?.id || selectedContact?._id);
             return ()=> unsubscribeToMessages();
          
-         },[selectedContact])
-         
-    
-       
-      
-
-
+         },[selectedContact]);
   return (
     <main className="flex w-full flex-1 items-center justify-center bg-white p-4 lg:w-3/4 lg:p-8">
           {selectedContact ? (
@@ -50,31 +50,51 @@ export const Chats = () => {
 
               <div className="flex-1 space-y-3 overflow-y-auto rounded-sm bg-slate-50 p-4 scrollbar-hide">
                 {messages?.length > 0 ? (
-                  messages?.map((message) => (
-                    <div
-                      key={message?.id || message?._id || `${message?.sender}-${message?.createdAt}`}
-                      className={`flex ${message?.sender === me ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div
-                        className={`max-w-xs rounded-2xl px-4 py-2 text-sm ${
-                          message?.sender=== me
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-white text-slate-700 shadow-sm'
-                        }`}
-                      >
-                        {message?.text}
+                  messages?.map((message) => {
+                    const isMine = String(message?.sender?._id || message?.sender) === String(me);
+                    const sender = message?.sender?.name || (isMine ? user?.name : selectedContact?.name);
+                    const avatarLabel = sender?.charAt(0)?.toUpperCase() || '?';
+                    const messageTime = formatTime(message?.createdAt || message?.updatedAt);
 
-                        {message?.image ? (
-                          <img src={message?.image} alt="sent media" className="mt-2 max-w-full rounded-lg" />
-                        ) : null}
-                        {message?.video ? (
-                          <video controls src={message?.video} className="mt-2 max-w-full rounded-lg" />
-                        ) : null}
+                    return (
+                      <div
+                        key={message?.id || message?._id || `${message?.sender}-${message?.createdAt}`}
+                        className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
+                      >
+                        <div className={`flex max-w-[80%] items-end gap-3 ${isMine ? 'flex-row-reverse' : 'flex-row'}`}>
+                          <div className="hidden h-9 w-9 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700 sm:flex">
+                            {avatarLabel}
+                          </div>
+                          <div className={`rounded-[4px] border px-4 py-1  text-sm shadow-sm ${isMine ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-900 border-slate-200'}`}>
+                            <div className="mb-2 flex items-center justify-between gap-3">
+                              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-300">
+                                {sender}
+                              </p>
+                             
+                            </div>
+                            <div className="whitespace-pre-line break-words text-sm leading-6">
+                              {message?.text || 'Sent a message'}
+
+                              
+                                 {messageTime ? (
+                                <p className={`text-[8px] top-8 ${isMine ? 'text-blue-100' : 'text-slate-400'}`}>
+                                  {messageTime}
+                                </p>
+                              ) : null}
+                            
+                               
+                            </div>
+                            {message?.image ? (
+                              <img src={message?.image} alt="sent media" className="mt-3 w-full rounded-lg object-cover" />
+                            ) : null}
+                            {message?.video ? (
+                              <video controls src={message?.video} className="mt-3 w-full rounded-lg object-cover" />
+                            ) : null}
+                          </div>
+                        </div>
                       </div>
-                      
-                    </div>
-                    
-                  ))
+                    );
+                  })
                 ) : (
                   <div className="flex h-full items-center justify-center text-center text-sm text-slate-500">
                     Start a conversation with {selectedContact.name}.

@@ -122,6 +122,7 @@ export const chatStore = create((set,get) => ({
       console.log('instant Msg',newMessage);
       console.log("usId",receiverId)
       console.log("nmSender",newMessage.sender);
+      console.log("intand text",newMessage);
 
         if(String(newMessage.sender)!==String(receiverId)) return;
       set((state) => ({

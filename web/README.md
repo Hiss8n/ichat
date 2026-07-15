@@ -31,6 +31,6 @@ WHAT NEXT
  10. BesT practices and optimisation
  11. Host the backend
  12. Remove user id in `.socket disconnet` *DONE*,
- 13. Instant message with socket io
+ 13. Instant message with socket io *DONE*, HAHAHA!!
 
  // URL=mongodb+srv://Hassoon:Hassoon123@cluster0.dvy3g9y.mongodb.net/ichat_db778?appName=Cluster0989 //
