@@ -13,20 +13,28 @@ const io =new Server(server,{cors: {
     credentials: true
   }});
 
-const usersSocketMap={};
+  const usersSocketMap={};
+  
 
 const getSocketIdByUserId = (userId) => {
-  return usersSocketMap[userId];
+  return usersSocketMap[userId] ;
 }
 
 io.on('connection', (socket) => {
 
     const userId = socket.handshake.query.userId;
-  console.log('A user connected with userId:', userId);
+ /*  console.log('A user connected with userId:', userId); */
+
+/*   socket.on("joinRoom", (userId) => {
+    socket.join(userId);
+ 
+    console.log(`${userId} joined room`);
+  });
+ */
+
 
   if(userId) usersSocketMap[userId] = socket.id;
   io.emit('onlineUsers', Object.keys(usersSocketMap));
-
 
   socket.on('disconnect', () => {
     console.log('A user disconnected with userId:', userId);

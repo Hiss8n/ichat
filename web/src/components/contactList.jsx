@@ -15,6 +15,8 @@ function ContactList() {
   const getMessages = chatStore((state) => state.getMessages);
   const getMyContacts = chatStore((state) => state.getMyContacts);
   const onlineUsers=authStore((state)=>state.onlineUsers);
+  const subscribeToMessages=chatStore((state)=>state.subscribeToMessages);
+  const unsubscribeToMessages=chatStore((state)=>state.unsubscribeToMessages);
 
 
  /*  console.log("Online Users arr:",onlineUsers); */
@@ -30,6 +32,13 @@ useEffect(()=>{
   /*  getMessages(selectedContact?.userId); */
 
 },[selectedContact,selectedContact]);
+
+useEffect(()=>{
+  subscribeToMessages(selectedContact?.userId);
+  console.log("sel",selectedContact?.userId)
+   return ()=> unsubscribeToMessages();
+
+},[selectedContact])
 
    useEffect(()=>{
     getMyContacts();

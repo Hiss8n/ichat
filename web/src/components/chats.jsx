@@ -5,8 +5,6 @@ import { chatStore } from '../store/chatStore';
 import { MessageInput } from './messageInput';
 import { useEffect } from 'react';
 
-
-
 export const Chats = () => {
        const token = authStore((state) => state.token);
        const user = authStore((state) => state.user);
@@ -16,12 +14,21 @@ export const Chats = () => {
         const addContact = chatStore((state) => state.addContact);
         const messages = chatStore((state) => state.messages);
         const getMyContacts = chatStore((state) => state.getMyContacts);
+          const subscribeToMessages=chatStore((state)=>state.subscribeToMessages);
+          const unsubscribeToMessages=chatStore((state)=>state.unsubscribeToMessages);
 
          const me=user?._id || user.id
 
          useEffect(()=>{
           token && setSelectedContact(null);
          },[token]);
+
+         useEffect(()=>{
+           subscribeToMessages(selectedContact?.id || selectedContact?._id);
+            return ()=> unsubscribeToMessages();
+         
+         },[selectedContact])
+         
     
        
       

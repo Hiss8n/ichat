@@ -111,16 +111,28 @@ export const chatStore = create((set,get) => ({
       set({isMessageLoading:false});
     }
   },
-  subscribeToMessages:async(userId)=>{
-    if (!userId) return;
+  subscribeToMessages:async(receiverId)=>{
+    
+    if (!receiverId) return;
     const socket=authStore.getState().socket;
-    socket.off("newMessage");
+   
+  /*   socket.off("newMessage"); */
     socket.on("newMessage",(newMessage)=>{
+      
       console.log('instant Msg',newMessage);
-      if(String(newMessage.sender)!==String(userId)) return;
-      set({messages:[...get().messages,newMessage]});
-      get().getMyContacts();
+      console.log("usId",receiverId)
+      console.log("nmSender",newMessage.sender);
+
+        if(String(newMessage.sender)!==String(receiverId)) return;
+      set((state) => ({
+      messages:(state.messages!==null) ?[...state.messages, newMessage]:[messages,newMessage],
+    })); 
+    /*   get().getMyContacts(); */
     })
     
+  },
+  unsubscribeToMessages:async()=>{
+    console.log("Unsubs")
   }
+
 }));
