@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {MessageCircleQuestionMark} from 'lucide-react';
 import { authStore } from '../store/authStore';
 import { chatStore } from '../store/chatStore';
@@ -12,6 +12,7 @@ const formatTime = (timestamp) => {
 };
 
 export const Chats = () => {
+   const messageRef=useRef(null);
        const token = authStore((state) => state.token);
        const user = authStore((state) => state.user);
         const selectedContact = chatStore((state) => state.selectedContact);
@@ -34,6 +35,15 @@ export const Chats = () => {
             return ()=> unsubscribeToMessages();
          
          },[selectedContact]);
+        
+
+
+          useEffect(()=>{
+           messageRef?.current?.scrollIntoView({
+              behavior: "smooth",
+               });
+         },[messages])
+ 
   return (
     <main className="flex w-full flex-1 items-center justify-center bg-white p-4 lg:w-3/4 lg:p-8">
           {selectedContact ? (
@@ -84,6 +94,7 @@ export const Chats = () => {
                             
                                
                             </div>
+                           
                             {message?.image ? (
                               <img src={message?.image} alt="sent media" className="mt-3 w-full rounded-lg object-cover" />
                             ) : null}
@@ -92,6 +103,7 @@ export const Chats = () => {
                             ) : null}
                           </div>
                         </div>
+                         <div ref={messageRef}/>
                       </div>
                     );
                   })

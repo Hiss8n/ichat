@@ -28,7 +28,7 @@ export const sendMessage = async (req, res) => {
 			text: text || '',
 			image: image || null,
 			video: video || null
-		}).populate('sender','name').populate('receiver','name')
+		});
 		// If the receiver maps to a registered user, emit the message to their socket
 
 		
