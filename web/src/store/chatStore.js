@@ -80,7 +80,7 @@ export const chatStore = create((set,get) => ({
        
       )
       const data= await response.json()
-      set({queryContacts:data});
+      set({queryContacts:data.contacts});
 
       return 
       

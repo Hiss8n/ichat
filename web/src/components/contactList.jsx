@@ -18,10 +18,16 @@ function ContactList() {
   const subscribeToMessages=chatStore((state)=>state.subscribeToMessages);
   const unsubscribeToMessages=chatStore((state)=>state.unsubscribeToMessages);
 
-  const queriedUsers=chatStore((state)=>state.queriedUsers);
+  const queryContacts=chatStore((state)=>state.queryContacts);
+
+
+
+
+  
 
 
  
+    console.log("found this contacts:",queryContacts);
 
 
  /*  console.log("Online Users arr:",onlineUsers); */
@@ -55,15 +61,33 @@ useEffect(()=>{
   getMessages(selectedContact?.userId|| contact?.userId);
 
    }
+
+
+     const matchedIds = new Set(
+             queryContacts?.map(contact => contact?._id)
+            );
+
+            const displayedContacts =[
+  ...queryContacts,
+  ...contacts.filter(
+    contact => !matchedIds.has(contact._id)
+  ),
+].sort((a, b) => {
+               const aMatched = matchedIds.has(a._id);
+              const bMatched = matchedIds.has(b._id);
+
+            if (aMatched === bMatched) return 0; // keep their relative order
+            return aMatched ? -1 : 1;            // matched contacts go first
+            });
+
   return(
     <div className="flex-1 space-y-2 overflow-y-auto scrollbar-hide">
-            {contacts?.length>=0?contacts.map((contact) => {
+
+            {
+              contacts?.length>=0? displayedContacts.map((contact) => {
               const isActive = contact.id === selectedContact?.id;
             /*   const isOnline = getOn(contact.id); */
-             const isOnline = onlineUsers.includes(contact?.userId);
-             
-              
-
+             const isOnline = onlineUsers.includes(contact?.userId)
               return (
                 <button
                   key={contact.id}
@@ -90,7 +114,8 @@ useEffect(()=>{
                 </button>
               ); 
 
-            }):(<p>Add you Contacts</p>)}
+            }):(<p>Add you Contacts</p>)
+              }
 
 
           {/*   <main className="flex w-full flex-1 items-center justify-center bg-white p-4 lg:w-3/4 lg:p-8">

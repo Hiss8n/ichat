@@ -40,7 +40,7 @@ function SearchInput() {
    }; 
   }
 
-  console.log("found this contacts:",queryContacts);
+ 
   return (
     <div>
       <label className="block">
