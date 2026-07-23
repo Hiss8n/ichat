@@ -1,21 +1,64 @@
-import React, { useState } from 'react'
+import { useState } from "react";
+import { chatStore } from "../store/chatStore";
+import { useEffect } from "react";
+
+
 
 function SearchInput() {
-       const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm,setSearchTerm]=useState("");
+
+ 
+  
+
+  const searchForContact=chatStore((state)=>state.searchForContact)
+   
+
+  const  queryContacts=chatStore((state)=>state.queryContacts);
+
+  useEffect(()=>{
+    const timer=setTimeout(()=>{
+      if(searchTerm.trim()!==""){
+        searchForContact(searchTerm);
+
+      }
+    },2000)
+    return () => clearTimeout(timer);
+  },[searchTerm])
+
+
+  const handleChange=(event)=>{
+   setSearchTerm(event.target.value);
+  }
+
+  const handleKeyDown=(e)=>{
+   console.log(e.key);
+   if(e.key==="Enter"){
+    console.log("searching for",searchTerm);
+    searchForContact(searchTerm);
+   setSearchTerm("")
+    
+   }; 
+  }
+
+  console.log("found this contacts:",queryContacts);
   return (
     <div>
-        <label>
-        <span className="sr-only">Search contacts</span>
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search contact"
-              className="w-full rounded-sm   px-3 py-1.5 text-sm outline-none transition  focus:bg-slate-300"
-            />
-          </label>
+      <label className="block">
+        <span className="text-slate-100">Search for contacts</span>
+         </label>
+        <input
+        id="search"
+        name="search"
+          onKeyDown={(e)=>handleKeyDown(e)}
+          type="text"
+          value={searchTerm}
+          onChange={handleChange}
+          placeholder="Search contact"
+           className="w-full rounded-sm px-3 py-1.5 text-sm text-slate-800 outline-none transition focus:border-slate-200"  
+        />
+     
     </div>
-  )
+  );
 }
 
-export default SearchInput
+export default SearchInput;

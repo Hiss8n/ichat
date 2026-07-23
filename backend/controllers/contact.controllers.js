@@ -1,6 +1,13 @@
 import Contact from '../model/Contact.js';
 import User from '../model/User.js';
 
+const buildContactPayload = (contact) => ({
+  id: contact._id,
+  email: contact.email,
+  userId: contact.userRefId,
+  name: contact.name || contact.email,
+  createdAt: contact.createdAt,
+});
 
 // Add a contact for the authenticated user by email
 export const addContact = async (req, res) => {
@@ -63,13 +70,7 @@ export const getMyContact = async (req, res) => {
       return res.json({ contacts: null });
     }
 
-    const enriched = contacts.map((c) => ({
-      id: c._id,
-      email: c.email,
-      userId:c.userRefId,
-      name: c.name || c.email,
-      createdAt: c.createdAt,
-    }));
+    const enriched = contacts.map(buildContactPayload);
 
     return res.json({ contacts: enriched });
   } catch (err) {
@@ -102,4 +103,73 @@ export const deleteContact = async (req, res) => {
   }
 };
 
-export default { addContact, getMyContact, deleteContact };
+// get contacts by search term and prioritize the closest matches
+export const getSearchedContact = async (req, res) => {
+  try {
+    const ownerId = req.user && (req.user._id || req.user.id);
+    const {searchTerm }= (req.query)
+     console.log("query terms:",searchTerm);
+     console.log('owner',ownerId.toString());
+
+    if (!ownerId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    if (!searchTerm) {
+      return res.json({ contacts: [] });
+    }
+
+    const safeSearch = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(safeSearch, 'i');
+    console.log('seach',searchTerm);
+    console.log('owner',ownerId);
+
+    const contacts = await Contact.find({
+      owner:ownerId,
+      $or: [
+    { name: { $regex: searchTerm, $options: "i" } },
+    {
+      $expr: {
+        $regexMatch: {
+          input: {
+            $arrayElemAt: [
+              { $split: ["$email", "@"] },
+              0
+            ]
+          },
+          regex: searchTerm,
+          options: "i"
+        }
+      }
+    },
+    
+  ],
+    }).select("name email avatar").limit(5).sort({ createdAt: -1 });
+
+    const normalizedQuery = searchTerm.toLowerCase();
+    const enriched = contacts
+      .map(buildContactPayload)
+      .sort((a, b) => {
+        const aName = (a.name || '').toLowerCase();
+        const bName = (b.name || '').toLowerCase();
+        const aEmail = (a.email || '').toLowerCase();
+        const bEmail = (b.email || '').toLowerCase();
+
+        const score = (value) => {
+          if (value === normalizedQuery) return 3;
+          if (value.startsWith(normalizedQuery)) return 2;
+          if (value.includes(normalizedQuery)) return 1;
+          return 0;
+        };
+
+        return score(bName) - score(aName) || score(bEmail) - score(aEmail);
+      });
+  
+    return res.json({ contacts: enriched });
+  } catch (error) {
+    console.error('getSearchedContact error:', error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export default { addContact, getMyContact, deleteContact, getSearchedContact };

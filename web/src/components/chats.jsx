@@ -12,6 +12,15 @@ const formatTime = (timestamp) => {
 };
 
 export const Chats = () => {
+  const [searchTerm,setSearchTerm]=useState("");
+
+  const handleKeyDown=(e)=>{
+    e.preventDefault()
+    console.log("event",e.key);
+  }
+
+
+
    const messageRef=useRef(null);
        const token = authStore((state) => state.token);
        const user = authStore((state) => state.user);
@@ -43,6 +52,9 @@ export const Chats = () => {
               behavior: "smooth",
                });
          },[messages])
+
+
+         
  
   return (
     <main className="flex w-full flex-1 items-center justify-center bg-white p-4 lg:w-3/4 lg:p-8">
@@ -114,7 +126,12 @@ export const Chats = () => {
                 )}
                 
               </div>
-              <MessageInput/>
+              <div>
+                 <MessageInput/>
+
+              </div>
+
+            
 
               
             </div>

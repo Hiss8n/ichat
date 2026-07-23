@@ -5,6 +5,7 @@ import { Socket } from 'socket.io-client';
 
 export const chatStore = create((set,get) => ({
   contacts: [],
+  queryContacts:[],
   messages: [],
   selectedContact: null,
   searchQuery: '',
@@ -61,6 +62,30 @@ export const chatStore = create((set,get) => ({
       return true;
     } catch (error) {
       console.log('Error sending message', error);
+      
+    }
+  },
+  searchForContact:async(searchTerm)=>{
+    const token = authStore.getState().token;
+    try {
+      const response=await fetch(`${BACKEND_URL}/api/contact/search?searchTerm=${encodeURIComponent(searchTerm)}`,
+        {
+          method: "GET",
+           headers:{
+          'Content-Type':'application/json',
+          Authorization:`Bearer ${token}`
+        }
+        },
+       
+       
+      )
+      const data= await response.json()
+      set({queryContacts:data});
+
+      return 
+      
+    } catch (error) {
+      console.log("something went wrong",error)
       
     }
   },

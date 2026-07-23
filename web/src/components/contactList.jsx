@@ -18,11 +18,16 @@ function ContactList() {
   const subscribeToMessages=chatStore((state)=>state.subscribeToMessages);
   const unsubscribeToMessages=chatStore((state)=>state.unsubscribeToMessages);
 
+  const queriedUsers=chatStore((state)=>state.queriedUsers);
+
+
+ 
+
 
  /*  console.log("Online Users arr:",onlineUsers); */
-  console.log('My contact:',contacts); 
+/*   console.log('My contact:',contacts);  */
  /*  console.log('Reg users',user.email); */
- console.log("selectooo:",selectedContact);
+/*  console.log("selectooo:",selectedContact); */
 
 
 const [isActive,setIsActive]=useState(false);
