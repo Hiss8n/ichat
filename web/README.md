@@ -32,5 +32,7 @@ WHAT NEXT
  11. Host the backend ##`PRIOR`
  12. Remove user id in `.socket disconnet` *DONE*,
  13. Instant message with socket io *DONE*, HAHAHA!!
+ 14.Filtering with contact search *DONE*
+ 15. put it on the the internet -Deploy with Docker 'monolithic deployment
 
  // URL=mongodb+srv://Hassoon:Hassoon123@cluster0.dvy3g9y.mongodb.net/ichat_db778?appName=Cluster0989 //
