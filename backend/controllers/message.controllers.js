@@ -2,6 +2,7 @@ import Message from '../model/Message.js';
 import User from '../model/User.js';
 import Contact from '../model/Contact.js';
 import { io, getSocketIdByUserId,usersSocketMap } from '../utils/socket.js';
+import cloudinary from '../utils/cloudinary.config.js';
 
 
 export const sendMessage = async (req, res) => {
@@ -22,11 +23,23 @@ export const sendMessage = async (req, res) => {
 		const contactReceiver = await User.findById(receiverId);
 		if (!contactReceiver) return res.status(400).json({ message: 'This contact is not using iChat, INVITE!' });
 
+
+
+
+		let imageUrl="";
+
+		if (image) {
+             const uploadedImage = await cloudinary.uploader.upload(image, {
+              folder: "uploads",
+             });
+
+               imageUrl = uploadedImage.secure_url;
+           }
 		const message = await Message.create({
 			sender: user._id || senderId,
 			receiver: receiverId,
 			text: text || '',
-			image: image || null,
+			image: imageUrl || null,
 			video: video || null
 		});
 		// If the receiver maps to a registered user, emit the message to their socket
