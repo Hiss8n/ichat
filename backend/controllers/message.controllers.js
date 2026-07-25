@@ -30,9 +30,6 @@ export const sendMessage = async (req, res) => {
 			video: video || null
 		});
 		// If the receiver maps to a registered user, emit the message to their socket
-
-		
-		
 		const socketId = getSocketIdByUserId(String(contactReceiver._id));
 		console.log("rid",socketId); 
 		if (socketId) {

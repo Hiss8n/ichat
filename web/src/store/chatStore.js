@@ -76,11 +76,11 @@ export const chatStore = create((set,get) => ({
           Authorization:`Bearer ${token}`
         }
         },
-       
+     
        
       )
       const data= await response.json()
-      set({queryContacts:data.contacts});
+      set({queryContacts:data?.contacts});
 
       return 
       
@@ -103,7 +103,7 @@ export const chatStore = create((set,get) => ({
         }
       });
       const data = await response.json();
-      set({ contacts:data.contacts, isContactLaoding: false });
+      set({ contacts:data?.contacts, isContactLaoding: false });
     } catch (error) {
       set({ isContactLaoding: false });
     } finally {

@@ -20,18 +20,11 @@ function ContactList() {
 
   const queryContacts=chatStore((state)=>state.queryContacts);
 
-
-
-
-  
-
-
- 
-    console.log("found this contacts:",queryContacts);
+    console.log("found this contacts:",Array.isArray(queryContacts));
 
 
  /*  console.log("Online Users arr:",onlineUsers); */
-/*   console.log('My contact:',contacts);  */
+  console.log('My contact:',Array.isArray(contacts)  ); 
  /*  console.log('Reg users',user.email); */
 /*  console.log("selectooo:",selectedContact); */
 
@@ -56,22 +49,22 @@ useEffect(()=>{
    },[token])
 
    const handleActiveContact=(contact)=>{
-  
+    if(selectedContact) setSelectedContact(null);
    setSelectedContact(contact);
   getMessages(selectedContact?.userId|| contact?.userId);
 
    }
 
 
-     const matchedIds = new Set(
-             queryContacts?.map(contact => contact?._id)
-            );
+    const matchedIds = new Set(
+             (queryContacts ?? []).map(contact => contact?._id)
+            )
 
             const displayedContacts =[
-  ...queryContacts,
-  ...contacts.filter(
+  ...(queryContacts ?? []),
+  ...(contacts ?? [])?.filter(
     contact => !matchedIds.has(contact._id)
-  ),
+  )
 ].sort((a, b) => {
                const aMatched = matchedIds.has(a._id);
               const bMatched = matchedIds.has(b._id);
