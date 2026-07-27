@@ -143,13 +143,7 @@ export const chatStore = create((set,get) => ({
    
   /*   socket.off("newMessage"); */
     socket.on("newMessage",(newMessage)=>{
-      
-      console.log('instant Msg',newMessage);
-      console.log("usId",receiverId)
-      console.log("nmSender",newMessage.sender);
-      console.log("intand text",newMessage);
-
-        if(String(newMessage.sender)!==String(receiverId)) return;
+     if(String(newMessage.sender)!==String(receiverId)) return;
       set((state) => ({
       messages:(state.messages!==null) ?[...state.messages, newMessage]:[messages,newMessage],
     })); 

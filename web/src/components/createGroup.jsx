@@ -1,0 +1,96 @@
+import { useState } from "react";
+import { Search, Check } from "lucide-react";
+import { chatStore } from "../store/chatStore";
+import { useEffect } from "react";
+import { authStore } from "../store/authStore";
+import Groups from "./groups";
+import ContactList from "./contactList";
+import GroupContactList from "./groupContacts";
+
+export default function CreateGroup() {
+
+
+
+  const [createAgroup,setCreateAgroup]=useState(false);
+
+  const handleGroupCreation=()=>{
+    console.log("A new group has been created!!")
+   setCreateAgroup(false);
+
+  }
+ 
+  return (
+     <div className="relative flex-1 w-full ">
+   
+          
+         {/*   <div className="mb-1 rounded-none border border-slate-200 bg-white p-1  shadow-sm"> */}
+               <div className="flex items-start">
+                 
+                 <div className="min-w-0 flex-1">
+                   <div className="flex items-start justify-center gap-2">
+                       <h1
+                       /*   onClick={handleLogout} */
+                         className="rounded-sm px-2 py-1 text-md font-semibold text-gray-800 transition hover:bg-slate-200"
+                       >
+                        Teams/Groups
+                       </h1>
+                    
+                   </div>
+               {/*   </div> */}
+   
+               </div>
+             </div>
+             {/* Add and contact email */}
+             <div className="mb-1 h-9 flex items-center justify-between ">
+               <div>           
+                  <h1 className="text-sm font-semibold text-slate-600">My Groups 001</h1>
+               </div>
+   
+             <button
+
+             onClick={()=>setCreateAgroup(!createAgroup)}
+             
+             className="inline-flex items-center justify-center gap-0 px-1 py-0.5 text-sm font-semibold
+                  text-white bg-pink-600 rounded-sm hover:bg-pink-500 focus:outline-none focus:ring-1
+                   focus:ring-pink-600 focus:ring-offset-1 transition-all shadow-sm">
+                
+               <span> + Add </span>
+             </button>
+          
+      
+           
+             </div>
+
+            
+             <hr className="mb-3 border-slate-800 w-[100%]" />
+
+             {
+              createAgroup ?
+              <div className="absolute  flex flex-col bottom-2 left-12 h-16 items-center">
+
+      
+               <button
+
+               onClick={handleGroupCreation}
+               
+               className="items-center justify-center gap-0 px-3 py-2.5 text-sm font-semibold
+                  text-white bg-red-500 rounded-sm hover:bg-pink-700 focus:outline-none focus:ring-1
+                   focus:ring-pink-500 focus:ring-offset-1 transition-all shadow-sm sm:px-1 sm:py-1">
+                
+               <span className="text-md font-serif text-white"> Create Group</span>
+             </button>
+              </div>:null
+   
+             }
+             {
+              !createAgroup ? <Groups/> :<GroupContactList/>
+             }
+
+
+              
+
+            
+        
+           </div>
+  );
+}

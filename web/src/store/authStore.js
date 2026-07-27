@@ -25,7 +25,7 @@ export const authStore = create((set,get) => ({
       const data = await response.json();
       get().connectSocket(data.user);
       chatStore.getState().subscribeToMessages(data.user._id);
-      console.log('resUser',data.user);
+   
 
       if (data.token) {
         localStorage.setItem('token', data.token);
@@ -52,7 +52,6 @@ export const authStore = create((set,get) => ({
       get().connectSocket(myUser);
       chatStore.getState().subscribeToMessages(myUser._id);
        set({ checkingAuth: false });
-       console.log('logedUser',myUser);
       return Boolean(storedToken);
     } catch (error) {
       console.log('There is error in auth', error);
@@ -130,18 +129,6 @@ export const authStore = create((set,get) => ({
     if(!user ||get().socket?.connected) return;
     const socket=io(BACKEND_URL,{query:{userId:user._id}})
      //send message via socket io
-
- /*  socket.on('newMessage', (message) => {
-    const { selectedUser, getMessages } = chatStore.getState();
-
-  if (
-    selectedUser &&
-    (message.sender === selectedUser.userId ||
-     message.receiver === selectedUser._id)
-  ) {
-    getMessages(message);
-  }
-}); */
 
 //get Online Users Instantly
     socket.on('onlineUsers',(userIds)=>{

@@ -10,9 +10,6 @@ function Login() {
 
 const login = authStore((state) => state.login);
 const isCheckingAuth = authStore((state) => state.isCheckingAuth );
-
-
-
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -25,20 +22,17 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Login attempt:', formData);
-    
+
   };
 
   const handleLogin = async(e) => {
     e.preventDefault();
     const response=await login(formData.email,formData.password);
-    console.log('login res',response);
-
+  
     if(response.success){
     setFormData({ email: '', password: '' });
     navigate('/');
     }else{
-      console.log('Failed to login',response);
       alert(response.message);
 
     }

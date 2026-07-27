@@ -6,13 +6,8 @@ import { useEffect } from "react";
 
 function SearchInput() {
   const [searchTerm,setSearchTerm]=useState("");
-
- 
-  
-
   const searchForContact=chatStore((state)=>state.searchForContact)
    
-
   const  queryContacts=chatStore((state)=>state.queryContacts);
 
   useEffect(()=>{
@@ -31,7 +26,6 @@ function SearchInput() {
   }
 
   const handleKeyDown=(e)=>{
-   console.log(e.key);
    if(e.key==="Enter"){
     console.log("searching for",searchTerm);
     searchForContact(searchTerm);

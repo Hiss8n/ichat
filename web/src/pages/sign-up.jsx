@@ -11,9 +11,6 @@ function SignUp() {
   const navigate =useNavigate();
   const isCheckingAuth = authStore((state) => state.isCheckingAuth );
 
-
-
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,7 +35,6 @@ function SignUp() {
     setFormData({ name: '', email: '', password: '' });
     navigate('/');
     }else{
-      console.log('Failed to sign upp',response.message);
       alert(response.message);
 
     }

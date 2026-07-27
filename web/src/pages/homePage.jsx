@@ -5,6 +5,8 @@ import AddContact from '../components/addContact';
 import ContactList from '../components/contactList';
 import SearchInput from '../components/searchInput';
 import { Chats } from '../components/chats';
+import Groups from '../components/groups';
+import CreateGroup from '../components/createGroup';
 
 
 function HomePage() {
@@ -30,7 +32,7 @@ function HomePage() {
   return (
     <div className="min-h-screen bg-slate-100 p-3 sm:p-4 md:p-6">
       <div className="mx-auto flex h-[90vh] max-w-7xl flex-col overflow-hidden rounded-sm border border-slate-200 bg-white md:flex-row">
-        <aside className="flex w-full flex-col border-b border-slate-200 bg-slate-50 p-4 sm:w-1/4 lg:border-b-0 lg:border-r">
+        <aside className="flex w-full flex-col border-b border-slate-200 bg-slate-50 p-4 sm:w-1/5 lg:border-b-0 lg:border-r">
          {/* Profile */}
         <div className="mb-1 rounded-none border border-slate-200 bg-white p-1  shadow-sm">
             <div className="flex items-start">
@@ -75,6 +77,12 @@ function HomePage() {
           
         </aside>
         <Chats/>
+
+         <aside className="flex w-full flex-col border-b border-slate-200 bg-slate-50 p-4 sm:w-1/5 lg:border-b-0 lg:border-r">
+         <CreateGroup/>
+         </aside>
+        {/* Right handbar */}
+       
         
        
 
