@@ -30,7 +30,7 @@ function HomePage() {
 
   
   return (
-    <div className="min-h-screen bg-slate-100 p-3 sm:p-4 md:p-6">
+    <div className="min-h-screen top-10 bg-slate-100 p-3 sm:p-4 md:p-6 ">
       <div className="mx-auto flex h-[90vh] max-w-7xl flex-col overflow-hidden rounded-sm border border-slate-200 bg-white md:flex-row">
         <aside className="flex w-full flex-col border-b border-slate-200 bg-slate-50 p-4 sm:w-1/5 lg:border-b-0 lg:border-r">
          {/* Profile */}

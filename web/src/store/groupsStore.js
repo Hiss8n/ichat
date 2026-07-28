@@ -6,8 +6,15 @@ export const useGroupStore= create((set,get)=>({
     addedContact:null,
     newMembers:[],
     allGroups:[],
-
+    createAgroup:false,
     setAddedContact:(addedContact) => set({ addedContact }),
+    setcreateAgroup:()=>{
+        const createAgroup=get().createAgroup
+
+         set({createAgroup:!createAgroup});
+
+    },
+       
 
     addToNewMembers:(addedContact)=>{
          const newMembers = get().newMembers || [];
@@ -45,6 +52,9 @@ export const useGroupStore= create((set,get)=>({
             
         }
     },
+    clearNewMembers: () => {
+     set({ newMembers: [] });
+      },
     getAllGroups:async(id)=>{
         try {
             const response=await fetch(`${BACKEND_URL}/api/groups/${id}`,{

@@ -7,14 +7,15 @@ import Groups from "./groups";
 import ContactList from "./contactList";
 import GroupContactList from "./groupContacts";
 import { useGroupStore } from "../store/groupsStore";
+import GroupInput from "./groupInput";
 
 export default function CreateGroup() {
 
-
-
-  const [createAgroup,setCreateAgroup]=useState(false);
+  const createAgroup=useGroupStore((state)=>state.createAgroup)
+  const setcreateAgroup=useGroupStore((state)=>state.setcreateAgroup)
 
     const newMembers=useGroupStore((state)=>state.newMembers);
+    const clearNewMembers=useGroupStore((state)=>state.clearNewMembers);
 
   const handleGroupCreation=()=>{
     if(newMembers.length<2){
@@ -25,9 +26,10 @@ export default function CreateGroup() {
           alert("Created successfull")
         }
         const timer=setTimeout(()=>{
-          setCreateAgroup(false);
+          setcreateAgroup(false);
         },200)
-  
+
+        clearNewMembers()
 
   }
  
@@ -53,21 +55,29 @@ export default function CreateGroup() {
                </div>
              </div>
              {/* Add and contact email */}
-             <div className="mb-1 h-9 flex items-center justify-between ">
-               <div>           
-                  <h1 className="text-sm font-semibold text-slate-600">My Groups 001</h1>
-               </div>
-   
-             <button
+             <div className="mb-1  flex flex-col items-center justify-between bg-slate-100 ">
+               <div className="flex items-center justify-between h-16">  
+               
+                   <h1 className="text-lg text-slate-800 font-bold  mr-8">Groups </h1>
+                  
+                  
+                         
+                 
+                  <button
 
-             onClick={()=>setCreateAgroup(!createAgroup)}
+                      onClick={()=>setcreateAgroup(!createAgroup)}
              
-             className="inline-flex items-center justify-center gap-0 px-1 py-0.5 text-sm font-semibold
+                        className="inline-flex items-center justify-center gap-0 px-1 py-0.5 text-sm font-semibold
                   text-white bg-pink-600 rounded-sm hover:bg-pink-500 focus:outline-none focus:ring-1
                    focus:ring-pink-600 focus:ring-offset-1 transition-all shadow-sm">
                 
                <span> + Add </span>
              </button>
+              
+               </div>
+               {createAgroup && <GroupInput/>}
+             
+          
           
       
            
