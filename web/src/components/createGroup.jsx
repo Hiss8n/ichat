@@ -6,6 +6,7 @@ import { authStore } from "../store/authStore";
 import Groups from "./groups";
 import ContactList from "./contactList";
 import GroupContactList from "./groupContacts";
+import { useGroupStore } from "../store/groupsStore";
 
 export default function CreateGroup() {
 
@@ -13,9 +14,20 @@ export default function CreateGroup() {
 
   const [createAgroup,setCreateAgroup]=useState(false);
 
+    const newMembers=useGroupStore((state)=>state.newMembers);
+
   const handleGroupCreation=()=>{
-    console.log("A new group has been created!!")
-   setCreateAgroup(false);
+    if(newMembers.length<2){
+
+      alert("You can't create a group with less than 2 people")
+      return
+        } else{
+          alert("Created successfull")
+        }
+        const timer=setTimeout(()=>{
+          setCreateAgroup(false);
+        },200)
+  
 
   }
  
@@ -65,7 +77,7 @@ export default function CreateGroup() {
              <hr className="mb-3 border-slate-800 w-[100%]" />
 
              {
-              createAgroup ?
+              createAgroup && newMembers.length!==null ?
               <div className="absolute  flex flex-col bottom-2 left-12 h-16 items-center">
 
       
