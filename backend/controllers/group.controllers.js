@@ -6,9 +6,10 @@ const createGroup = async (req,res)=>{
    try {
 
 
-    if (!name | !description |! members){
+    if (!name |! members){
         return res.status(400).json({message:"Must a name,description and at east 2 members"})
     }
+    
     const group=await Group.create({
     name,
     description,

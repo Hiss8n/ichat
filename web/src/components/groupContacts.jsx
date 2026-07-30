@@ -16,11 +16,6 @@ function GroupContactList() {
       const setAddedContact=useGroupStore((state)=>state.setAddedContact);
       const addToNewMembers=useGroupStore((state)=>state.addToNewMembers);
       const newMembers=useGroupStore((state)=>state.newMembers);
-
-    
-console.log("members",newMembers);
-
-
       const brightColors = [
   "#FF5733", // Bright Orange
   "#FF1493", // Deep Pink
@@ -71,7 +66,7 @@ const getRandomBg = (id) => {
             {
               contacts?.length>=0? contacts?.map((contact) => {
               const isAdded =newMembers.includes(contact?.id);
-              console.log(isAdded)
+     
             /*   const isOnline = getOn(contact.id); */
             /*  const isChecked = onlineUsers.includes(contact?.userId) */
               return (

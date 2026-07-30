@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { BACKEND_URL } from "../API/api";
 import { authStore } from "./authStore";
+import { getAllGroups } from "../../../backend/controllers/group.controllers";
 
 
 export const useGroupStore= create((set,get)=>({
@@ -8,11 +9,14 @@ export const useGroupStore= create((set,get)=>({
     newMembers:[],
     allGroups:[],
     oneGroup:null,
+    groupName:"",
     createAgroup:false,
     selectedGroup:null,
     setAddedContact:(addedContact) => set({ addedContact }),
-    setcreateAgroup:()=>{
-        
+    setGroupName:(name) => set({ groupName:name }),
+
+
+    setcreateAgroup:()=>{   
     const createAgroup=get().createAgroup
     set({createAgroup:!createAgroup});
 
@@ -22,7 +26,7 @@ export const useGroupStore= create((set,get)=>({
 
        }),
        
-    addToNewMembers:(addedContact)=>{
+    addToNewMembers:async(addedContact)=>{
     const newMembers = get().newMembers || [];
 
         const updatedMembers = newMembers.includes(addedContact)
@@ -31,9 +35,11 @@ export const useGroupStore= create((set,get)=>({
 
        set({ newMembers: updatedMembers });
     },
-    createNewGroup:async(payload)=>{
-
+    createNewGroup:async(groupName)=>{
         const token = authStore.getState().token;
+        const groupMembers=get().newMembers
+        console.log("mmbers",groupMembers);
+        console.log("name:",groupName);
         try {
             const response= await fetch(`${BACKEND_URL}/api/groups`,{
                 method:'POST',
@@ -42,16 +48,17 @@ export const useGroupStore= create((set,get)=>({
                     Authorization:`Bearer ${token}`
                 },
                 body:JSON.stringify({
-                    _id:payload._id,
-                    name:payload.name,
-                    email:payload.email,
-                    createdAt:payload.createdAt | Date.now()
+                    name:groupName,
+                    members:groupMembers,
+                    createdAt:Date.now()
                 })
             })
 
             const result =await response.json()
+           console.log(result); 
+           set({allGroups:allGroups!==null? [...allGroups, result]:[result]});
 
-            get().getAllGroups()
+            get().getAllGroups() 
             
         } catch (error) {
             console.log("Something went wrong",error)

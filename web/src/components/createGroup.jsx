@@ -13,21 +13,33 @@ export default function CreateGroup() {
 
   const createAgroup=useGroupStore((state)=>state.createAgroup)
   const setcreateAgroup=useGroupStore((state)=>state.setcreateAgroup)
+  const getAllGroups=useGroupStore((state)=>state.getAllGroups)
 
+  const createNewGroup=useGroupStore((state)=>state.createNewGroup)
+  const groupName=useGroupStore((state)=>state.groupName)
     const newMembers=useGroupStore((state)=>state.newMembers);
     const clearNewMembers=useGroupStore((state)=>state.clearNewMembers);
 
-  const handleGroupCreation=()=>{
+
+
+
+/*   console.log("members$",newMembers)
+  console.log("name$",groupName) */
+
+
+  const handleGroupCreation=async()=>{
     if(newMembers.length<2){
 
       alert("You can't create a group with less than 2 people")
       return
         } else{
+           await createNewGroup(groupName);
           alert("Created successfull")
         }
         const timer=setTimeout(()=>{
+          getAllGroups()
           setcreateAgroup(false);
-        },200)
+        },1000)
 
         clearNewMembers()
 
