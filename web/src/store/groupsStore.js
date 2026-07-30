@@ -1,23 +1,29 @@
 import { create } from "zustand";
 import { BACKEND_URL } from "../API/api";
+import { authStore } from "./authStore";
 
 
 export const useGroupStore= create((set,get)=>({
     addedContact:null,
     newMembers:[],
     allGroups:[],
+    oneGroup:null,
     createAgroup:false,
+    selectedGroup:null,
     setAddedContact:(addedContact) => set({ addedContact }),
     setcreateAgroup:()=>{
-        const createAgroup=get().createAgroup
-
-         set({createAgroup:!createAgroup});
+        
+    const createAgroup=get().createAgroup
+    set({createAgroup:!createAgroup});
 
     },
-       
+    setSelectedGroup:(group)=>set({
+        selectedGroup:group
 
+       }),
+       
     addToNewMembers:(addedContact)=>{
-         const newMembers = get().newMembers || [];
+    const newMembers = get().newMembers || [];
 
         const updatedMembers = newMembers.includes(addedContact)
         ? newMembers.filter(id => id !== addedContact)
@@ -27,7 +33,7 @@ export const useGroupStore= create((set,get)=>({
     },
     createNewGroup:async(payload)=>{
 
-         const token = authStore.getState().token;
+        const token = authStore.getState().token;
         try {
             const response= await fetch(`${BACKEND_URL}/api/groups`,{
                 method:'POST',
@@ -55,9 +61,10 @@ export const useGroupStore= create((set,get)=>({
     clearNewMembers: () => {
      set({ newMembers: [] });
       },
-    getAllGroups:async(id)=>{
+    getAllGroups:async()=>{
+          const token = authStore.getState().token;
         try {
-            const response=await fetch(`${BACKEND_URL}/api/groups/${id}`,{
+            const response=await fetch(`${BACKEND_URL}/api/groups`,{
                 method:'GET',
                 headers:{
                     'Content-Type':"application/json",
@@ -67,9 +74,10 @@ export const useGroupStore= create((set,get)=>({
             })
 
 
-            const data = await response.json()
+            const data = await response.json();
+            
 
-            set({allGroups:data.groups})
+        set({allGroups:data})
             
         } catch (error) {
             console.log('Some thing went wrong,cant get groups',error)

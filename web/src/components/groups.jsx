@@ -1,9 +1,25 @@
 import { useState } from "react";
 import { groupMessages } from "../API/data/groupdMessages";
-import { groups } from "../API/data/groups";
+/* import { groups } from "../API/data/groups"; */
+import { useGroupStore } from "../store/groupsStore";
 
 
 export default function Groups() {
+
+
+
+    const getAllGroups = useGroupStore((state) => state.getAllGroups);
+        const allGroups = useGroupStore((state) => state.allGroups);
+  const groups=allGroups!==null?allGroups:[]
+
+
+
+ console.log('grps:here:',allGroups);
+
+
+
+
+
   const [selectedGroup, setSelectedGroup] = useState(null);
   return (
     <div className="flex h-full bg-base-1000 ">
@@ -21,18 +37,25 @@ export default function Groups() {
                   }`}
                 >
                   <div className="relative mr-3">
-                   <img
-                        src={group?.profilePic}
+
+
+                    {group?.image?(
+                        <img
+                        src={group?.image}
                         alt={group?.name}
                        className="w-10 h-10 rounded-full object-cover"
                        />
-         
+                    ):(
+                      <div  className="flex h-10 w-10 items-center justify-center rounded-full font-semibold bg-blue-600/70 text-white">
+                        {group?.name?.charAt(0).toUpperCase() + group.name.charAt(1) || "X"}
+                      </div>)}
                   </div>
                     <div className="flex-1 min-w-0">
               <h3 className="font-semibold truncate">{group?.name}</h3>
 
               <p className="text-sm text-base-content/70 truncate">
-                {group?.lastMessage.text}
+               The is the last message or text
+                {/* {group?.lastMessage.text} */}
               </p>
             </div>
               {group?.unreadCount > 0 && (

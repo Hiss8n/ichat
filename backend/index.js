@@ -5,6 +5,8 @@ import connectDB from './utils/db.js';
 import authRoutes from './routes/auth.routes.js';
 import messageRoutes from './routes/message.routes.js';
 import contactRoutes from './routes/contact.routes.js';
+import groupsRoutes from './routes/groups.routes.js';
+
 
 import cronJobs from './utils/cron.js';
 import { app, server} from "./utils/socket.js";
@@ -26,6 +28,7 @@ const PORT = process.env.PORT || 3000;
 app.use('/api/auth', authRoutes);
 app.use('/api/message', messageRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/groups', groupsRoutes);
 
 connectDB()
   .then(() => {

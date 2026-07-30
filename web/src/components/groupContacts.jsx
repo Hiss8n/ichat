@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { chatStore } from '../store/chatStore';
 import { authStore } from '../store/authStore';
 import { useGroupStore } from '../store/groupsStore';
@@ -11,12 +11,13 @@ function GroupContactList() {
       const contacts = chatStore((state) => state.contacts);
       const addContact = chatStore((state) => state.addContact);
       const onlineUsers = authStore((state) => state.onlineUsers);
-
+    
       const addedContact=useGroupStore((state)=>state.addedContact);
       const setAddedContact=useGroupStore((state)=>state.setAddedContact);
       const addToNewMembers=useGroupStore((state)=>state.addToNewMembers);
       const newMembers=useGroupStore((state)=>state.newMembers);
 
+    
 console.log("members",newMembers);
 
 

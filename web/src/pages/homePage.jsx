@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authStore } from '../store/authStore';
 import AddContact from '../components/addContact';
@@ -7,16 +7,19 @@ import SearchInput from '../components/searchInput';
 import { Chats } from '../components/chats';
 import Groups from '../components/groups';
 import CreateGroup from '../components/createGroup';
+import { useGroupStore } from '../store/groupsStore';
 
 
 function HomePage() {
- 
 
- 
   const user = authStore((state) => state.user);
   const logout = authStore((state) => state.logout);
   const navigate = useNavigate();
+ const getAllGroups = useGroupStore((state) => state.getAllGroups);
 
+ useEffect(()=>{
+  getAllGroups()
+ },[])
   const handleLogout = async () => {
     await logout();
     navigate('/login');
@@ -26,9 +29,6 @@ function HomePage() {
   const bio = user?.bio || 'Ready to chat';
   const createdAt = user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Recently joined';
   const profileInitial = displayName.charAt(0).toUpperCase();
-
-
-  
   return (
     <div className="min-h-screen top-10 bg-slate-100 p-3 sm:p-4 md:p-6 ">
       <div className="mx-auto flex h-[90vh] max-w-7xl flex-col overflow-hidden rounded-sm border border-slate-200 bg-white md:flex-row">
@@ -82,9 +82,6 @@ function HomePage() {
          <CreateGroup/>
          </aside>
         {/* Right handbar */}
-       
-        
-       
 
        
       </div>
