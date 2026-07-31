@@ -1,32 +1,49 @@
 import { useState } from "react";
-import { groupMessages } from "../API/data/groupdMessages";
+
 /* import { groups } from "../API/data/groups"; */
 import { useGroupStore } from "../store/groupsStore";
+import { chatStore } from "../store/chatStore";
 
 
 export default function Groups() {
 
-
-
     const getAllGroups = useGroupStore((state) => state.getAllGroups);
-        const allGroups = useGroupStore((state) => state.allGroups);
-  const groups=allGroups!==null?allGroups:[]
+      const allGroups = useGroupStore((state) => state.allGroups);
+      const selectedGroup = useGroupStore((state) => state.selectedGroup);
+      const selectedContact = chatStore((state) => state.selectedContact);
+      const setSelectedContact = chatStore((state) => state.setSelectedContact);
+      const setSelectedGroup = useGroupStore((state) => state.setSelectedGroup);
+      const groups=allGroups!==null?allGroups:[];
 
 
-  const [selectedGroup, setSelectedGroup] = useState(null);
+
+  const handleSelectedGroup =(group)=>{
+    setSelectedContact(null);
+     setSelectedGroup(group);
+
+  }
+
+   console.log('grou',selectedGroup);
+   console.log("cont",selectedContact);
+
   return (
     <div className="flex h-full bg-base-1000 ">
       {/* Sidebar */}
       <aside className="w-50 border-r border-base-300 overflow-y-auto bg-base-100">
        
-        {groups.length>0?groups?.map((group) => (
+        {groups.length>0?groups?.map((group) => {
+          const isActive=selectedGroup?._id===group?._id;
+        
+        return(
+         /*const isActive=group.id===selectedGroup.id */
+
                  <button
                   key={group._id}
-                   onClick={() => setSelectedGroup(group)}
+                   onClick={()=>handleSelectedGroup(group)}
                   type="button"
                 
                   className={`flex w-full items-center rounded-md px-3 py-3 text-left transition ${
-                    selectedGroup?._id === group?._id ? "bg-base-200" : ""
+                    isActive ? "bg-slate-200" : ""
                   }`}
                 >
                   <div className="relative mr-3">
@@ -59,7 +76,7 @@ export default function Groups() {
 
 
 
-        )):<p className="flex items-center text-2xl">No Groups🧹</p>}
+        )} ):<p className="flex items-center text-2xl">No Groups🧹</p>}
       </aside>
       
     </div>

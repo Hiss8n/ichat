@@ -20,12 +20,8 @@ export default function CreateGroup() {
     const newMembers=useGroupStore((state)=>state.newMembers);
     const clearNewMembers=useGroupStore((state)=>state.clearNewMembers);
 
-
-
-
 /*   console.log("members$",newMembers)
   console.log("name$",groupName) */
-
 
   const handleGroupCreation=async()=>{
     if(newMembers.length<2){
@@ -47,8 +43,6 @@ export default function CreateGroup() {
  
   return (
      <div className="relative flex-1 w-full ">
-   
-          
          {/*   <div className="mb-1 rounded-none border border-slate-200 bg-white p-1  shadow-sm"> */}
                <div className="flex items-start">
                  
@@ -71,10 +65,7 @@ export default function CreateGroup() {
                <div className="flex items-center justify-between h-16">  
                
                    <h1 className="text-lg text-slate-800 font-bold  mr-8">Groups </h1>
-                  
-                  
-                         
-                 
+
                   <button
 
                       onClick={()=>setcreateAgroup(!createAgroup)}

@@ -1,30 +1,35 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { chatStore } from '../store/chatStore'
 import { authStore } from '../store/authStore';
+import { useGroupStore } from '../store/groupsStore';
 
 function ContactList() {
 
 
   const token = authStore((state) => state.token);
+
   const user = authStore((state) => state.user);
-  const users = authStore((state) => state.users);
+
   const selectedContact = chatStore((state) => state.selectedContact);
   const setSelectedContact = chatStore((state) => state.setSelectedContact);
+
+  const selectedGroup = useGroupStore((state) => state.selectedGroup);
+  const setSelectedGroup = useGroupStore((state) => state.setSelectedGroup);
+
   const contacts = chatStore((state) => state.contacts);
   const addContact = chatStore((state) => state.addContact);
+
   const getMessages = chatStore((state) => state.getMessages);
   const getMyContacts = chatStore((state) => state.getMyContacts);
+
   const onlineUsers=authStore((state)=>state.onlineUsers);
+
   const subscribeToMessages=chatStore((state)=>state.subscribeToMessages);
   const unsubscribeToMessages=chatStore((state)=>state.unsubscribeToMessages);
 
   const queryContacts=chatStore((state)=>state.queryContacts);
 
 
- /*  console.log("Online Users arr:",onlineUsers); */
-/*   console.log('My contact:',Array.isArray(contacts)  );  */
- /*  console.log('Reg users',user.email); */
-/*  console.log("selectooo:",selectedContact); */
 
 
 const [isActive,setIsActive]=useState(false);
@@ -47,8 +52,14 @@ useEffect(()=>{
    },[token])
 
    const handleActiveContact=(contact)=>{
-    if(selectedContact) setSelectedContact(null);
-   setSelectedContact(contact);
+  setSelectedGroup(null);
+  setSelectedContact(contact);
+  
+
+
+
+/*     if(selectedContact) setSelectedContact(null);
+   setSelectedContact(contact); */
   getMessages(selectedContact?.userId|| contact?.userId);
 
    }
@@ -99,8 +110,6 @@ useEffect(()=>{
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold">{contact.name}</p>
                     <p className='text-sm'>{contact?.email}</p>
-                   
-    
                   </div>
                 </button>
               ); 

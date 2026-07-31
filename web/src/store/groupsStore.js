@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { BACKEND_URL } from "../API/api";
 import { authStore } from "./authStore";
 import { getAllGroups } from "../../../backend/controllers/group.controllers";
+import { chatStore } from "./chatStore";
 
 
 export const useGroupStore= create((set,get)=>({
@@ -21,11 +22,8 @@ export const useGroupStore= create((set,get)=>({
     set({createAgroup:!createAgroup});
 
     },
-    setSelectedGroup:(group)=>set({
-        selectedGroup:group
+    setSelectedGroup:(group)=>set({selectedGroup:group}),
 
-       }),
-       
     addToNewMembers:async(addedContact)=>{
     const newMembers = get().newMembers || [];
 

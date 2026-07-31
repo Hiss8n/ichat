@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { BACKEND_URL } from '../API/api';
 import { authStore } from './authStore';
 import { Socket } from 'socket.io-client';
+import { useGroupStore } from './groupsStore';
 
 export const chatStore = create((set,get) => ({
   contacts: [],
@@ -36,8 +37,8 @@ export const chatStore = create((set,get) => ({
       console.log('Error occured adding contact', error);
     }
   },
-  setSelectedContact: (selectedContact) => set({ selectedContact }),
-
+  setSelectedContact: (selectedContact) => set({ selectedContact}),
+   
   sendMessage: async ( payload = {}) => {
     const token = authStore.getState().token;
     const user = authStore.getState().user;

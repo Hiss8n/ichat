@@ -4,6 +4,7 @@ import { authStore } from '../store/authStore';
 import { chatStore } from '../store/chatStore';
 import { MessageInput } from './messageInput';
 import { useEffect } from 'react';
+import { groupMessages } from "../API/data/groupdMessages";
 
 const formatTime = (timestamp) => {
   if (!timestamp) return '';
@@ -12,19 +13,16 @@ const formatTime = (timestamp) => {
 };
 
 export const Chats = () => {
-  const [searchTerm,setSearchTerm]=useState("");
-
+  const [searchTerm,setSearchTerm]=useState("")
   const handleKeyDown=(e)=>{
     e.preventDefault()
   
   }
-
-
-
    const messageRef=useRef(null);
        const token = authStore((state) => state.token);
        const user = authStore((state) => state.user);
         const selectedContact = chatStore((state) => state.selectedContact);
+        const selectedGroup = chatStore((state) => state.selectedGroup);
         const setSelectedContact = chatStore((state) => state.setSelectedContact);
         const contacts = chatStore((state) => state.contacts);
         const addContact = chatStore((state) => state.addContact);
@@ -44,7 +42,9 @@ export const Chats = () => {
             return ()=> unsubscribeToMessages();
          
          },[selectedContact]);
-        
+         if(!selectedContact | selectedContact==null && selectedGroup!==null){
+          console.log("Gmsgs",groupMessages);
+         }
 
 
           useEffect(()=>{
