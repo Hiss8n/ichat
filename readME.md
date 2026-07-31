@@ -11,3 +11,7 @@
  -Remove the user who is clicked twice and remove the id from the payload, -To remove the id that was to be added,check if the specific id
   is already present be using the method `array001.include(nameOfsecondArr)` this filter the id out.
 - if the user has added less than two users, The createGroup function does not run `Can not create groupt with less than two users`
+
+1. TO CREATE AND SEND MESSAGE TO THE DATABASE API
+2. CALL THE API AND DISPLAY THE GROUP MESSAGES
+3.IMPLAMENT SOCKET IO FOR THE GROUPD ONLINE WITH WEESAGE LISTENNING TO THE BACKEND API FOR ONLINE MEMBERS IN THE GROUPS
