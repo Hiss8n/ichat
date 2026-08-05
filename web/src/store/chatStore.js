@@ -112,6 +112,8 @@ export const chatStore = create((set,get) => ({
     }
   },
   getMessages:async()=>{
+
+    
     const {selectedContact,messages}=get();
     const token = authStore.getState().token;
     if(!selectedContact||!token ) return;

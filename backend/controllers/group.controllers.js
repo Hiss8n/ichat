@@ -31,7 +31,7 @@ const createGroup = async (req,res)=>{
     return res.status(500).json({ message: 'Server error01' });
     
 }
-}
+};
 
 const getAgroupMember=async(req,res)=>{
     try {
@@ -70,7 +70,7 @@ const myId = req.user && (req.user._id || req.user.id);
         console.log("some thing went wrong",error)
         return res.status(500).json({message:"server errror"});  
     }
-}
+};
 
 
 
@@ -93,7 +93,7 @@ const addPersonToGroup=async(req,res)=>{
     }
 
     res.json(addPerson)
-}
+};
 
 const removePersonFromGroup=async(req,res)=>{
 
@@ -115,6 +115,6 @@ const removePersonFromGroup=async(req,res)=>{
     return res.status(500).json({ message: 'Server error' });   
     }
 
-}
+};
 
 export  {createGroup,getAgroupMember,getAllGroups,removePersonFromGroup,addPersonToGroup};

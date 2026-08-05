@@ -8,6 +8,7 @@ import { chatStore } from "./chatStore";
 export const useGroupStore= create((set,get)=>({
     addedContact:null,
     newMembers:[],
+    groupsMessages:[],
     allGroups:[],
     oneGroup:null,
     groupName:"",
@@ -15,8 +16,6 @@ export const useGroupStore= create((set,get)=>({
     selectedGroup:null,
     setAddedContact:(addedContact) => set({ addedContact }),
     setGroupName:(name) => set({ groupName:name }),
-
-
     setcreateAgroup:()=>{   
     const createAgroup=get().createAgroup
     set({createAgroup:!createAgroup});
@@ -88,8 +87,69 @@ export const useGroupStore= create((set,get)=>({
             console.log('Some thing went wrong,cant get groups',error)
             
         }
-    }
-    
+    },
 
+    sendGroupMessage:async(payload={})=>{
+
+    const token = authStore.getState().token;
+    const user = authStore.getState().user;
+    const {selectedGroup,groupsMessages}=get();
+  
+    if(!selectedGroup||!token ) return;
+    const groupId=selectedGroup?._id;
+    console.log("grpid",groupId);
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/groups/message/${groupId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+
+      
+     
+      /*   set({messages:messages!==null? [...messages, data.message]:[data.messages]}); */
+  get().getGroupsMessages()
+    
+    }catch(error){
+        console.log("There is something went wrong",error)
+
+    }
+
+    },
+
+
+    getGroupsMessages:async()=>{
+
+    const {selectedGroup,groupsMessages}=get();
+    const token = authStore.getState().token;
+    if(!selectedGroup||!token ) return;
+    const groupId=selectedGroup._id 
+   /*  if(selectedGroup!==selectedGroup) return console.log("should match!!"); */
+
+    try { 
+    const response=await fetch(`${BACKEND_URL}/api/groups/message/${groupId}`,{
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:`Bearer ${token}`
+      }
+    });
+
+    const data= await response.json();
+
+    console.log("::",data);
+   set({groupsMessages:groupsMessages.length!==null? [...groupsMessages, data]:[data]});
+    return true
+    } catch (error) {
+      console.log('Something went wrong',error);
+      
+    }
+
+    }
 
 }))

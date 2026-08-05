@@ -4,10 +4,10 @@ import { authStore } from '../store/authStore';
 import AddContact from '../components/addContact';
 import ContactList from '../components/contactList';
 import SearchInput from '../components/searchInput';
-import { Chats } from '../components/chats';
 import Groups from '../components/groups';
 import CreateGroup from '../components/createGroup';
 import { useGroupStore } from '../store/groupsStore';
+import {Chat} from "../components/chat"
 
 
 function HomePage() {
@@ -76,8 +76,11 @@ function HomePage() {
 
           
         </aside>
-        <Chats/>
+         <aside className="flex w-full flex-col border-b border-slate-200 bg-slate-50 p-4 sm:w-3/5 lg:border-b-0 lg:border-r">
+           <Chat/>
 
+         </aside>
+      
          <aside className="flex w-full flex-col border-b border-slate-200 bg-slate-50 p-4 sm:w-1/5 lg:border-b-0 lg:border-r">
          <CreateGroup/>
          </aside>

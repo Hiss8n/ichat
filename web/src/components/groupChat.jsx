@@ -1,81 +1,55 @@
-import React, { useRef, useState } from 'react'
-import {MessageCircleQuestionMark} from 'lucide-react';
-import { authStore } from '../store/authStore';
+import React, { useEffect, useRef } from 'react'
 import { chatStore } from '../store/chatStore';
+import { useGroupStore } from '../store/groupsStore';
 import { MessageInput } from './messageInput';
-import { useEffect } from 'react';
-import { groupMessages } from "../API/data/groupdMessages";
+import { authStore } from '../store/authStore';
+import { formatTime } from './individualChat';
 
-const formatTime = (timestamp) => {
-  if (!timestamp) return '';
-  const date = new Date(timestamp);
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-};
-
-export const Chats = () => {
-  const [searchTerm,setSearchTerm]=useState("")
-  const handleKeyDown=(e)=>{
-    e.preventDefault()
-  
-  }
+function GroupChat() {
+  const user =authStore((state)=>state.user);
    const messageRef=useRef(null);
-       const token = authStore((state) => state.token);
-       const user = authStore((state) => state.user);
-        const selectedContact = chatStore((state) => state.selectedContact);
-        const selectedGroup = chatStore((state) => state.selectedGroup);
-        const setSelectedContact = chatStore((state) => state.setSelectedContact);
-        const contacts = chatStore((state) => state.contacts);
-        const addContact = chatStore((state) => state.addContact);
-        const messages = chatStore((state) => state.messages);
-        const getMyContacts = chatStore((state) => state.getMyContacts);
-          const subscribeToMessages=chatStore((state)=>state.subscribeToMessages);
-          const unsubscribeToMessages=chatStore((state)=>state.unsubscribeToMessages);
+  
+    const selectedContact = chatStore((state) => state.selectedContact);
+    const selectedGroup = useGroupStore((state) => state.selectedGroup);
+    const groupsMessages = useGroupStore((state) => state.groupsMessages);
+    const setSelectedContact = chatStore((state) => state.setSelectedContact);
 
-         const me=user?._id || user.id
-
-         useEffect(()=>{
-          token && setSelectedContact(null);
-         },[token]);
-
-         useEffect(()=>{
-           subscribeToMessages(selectedContact?.id || selectedContact?._id);
-            return ()=> unsubscribeToMessages();
-         
-         },[selectedContact]);
-         if(!selectedContact | selectedContact==null && selectedGroup!==null){
-          console.log("Gmsgs",groupMessages);
-         }
+    console.log("convers::",groupsMessages);
 
 
-          useEffect(()=>{
-           messageRef?.current?.scrollIntoView({
-              behavior: "smooth",
-               });
-         },[messages]);
+    useEffect(()=>{
+      messageRef?.current?.scrollIntoView({
+       behavior: "smooth",
+        });
+    },[groupsMessages]);
+
+
   return (
-    <main className="flex w-full flex-1 items-center justify-center bg-white p-4 lg:w-3/4 lg:p-8">
-          {selectedContact ? (
+   <main className="flex w-full flex-1 items-center justify-center bg-white p-4 lg:w-full lg:p-8">
+            { selectedGroup ? (
             <div className="flex h-full w-full flex-col">
               <div className="mb-4 flex items-center border-b border-slate-200 pb-4">
                 <div className="mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-700">
-                  {selectedContact?.name.charAt(0).toUpperCase()}
+                  {selectedGroup?.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-slate-900">{selectedContact.name}</h2>
-                  <p className="text-sm text-slate-500">{selectedContact.role}</p>
+                  <h2 className="text-lg font-semibold text-slate-900">{selectedGroup.name}</h2>
+                  <p className="text-sm text-slate-500">{selectedGroup.description}</p>
                 </div>
               </div>
 
               <div className="flex-1 space-y-3 overflow-y-auto rounded-sm bg-slate-50 p-4 scrollbar-hide">
-                {messages?.length > 0 ? (
-                  messages?.map((message) => {
+                {groupsMessages?.length > 0 ? (
+                  groupsMessages?.map((message) => {
+                    const me=user?.id || user?.id
                     const isMine = String(message?.sender?._id || message?.sender) === String(me);
-                    const sender = message?.sender?.name || (isMine ? user?.name : selectedContact?.name);
+                    const sender = message?.sender?.name || (isMine ? user?.name : selectedGroup?.name);
                     const avatarLabel = sender?.charAt(0)?.toUpperCase() || '?';
                     const messageTime = formatTime(message?.createdAt || message?.updatedAt);
                     return (
                       <div
-                        key={message?.id || message?._id || `${message?.sender}-${message?.createdAt}`}
+                        key={message?._id || message._id || message?.createdAt}
+
                         className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
                       >
                         <div className={`flex max-w-[80%] items-end gap-3 ${isMine ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -107,8 +81,7 @@ export const Chats = () => {
                             
                                
                             </div>
-                           
-                          
+                        
                           </div>
                         </div>
                          <div ref={messageRef}/>
@@ -117,29 +90,26 @@ export const Chats = () => {
                   })
                 ) : (
                   <div className="flex h-full items-center justify-center text-center text-sm text-slate-500">
-                    Start a conversation with {selectedContact.name}.
+                    Start a conversation with {selectedGroup?.name}.
                   </div>
                 )}
                 
               </div>
               <div>
-                 <MessageInput/>
+              <MessageInput/>
 
-              </div>
-
-            
-
-              
+              </div> 
             </div>
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center text-center">
-                <MessageCircleQuestionMark size={156} color="#2065ee" />
-              <h2 className="text-2xl font-semibold text-slate-800">No contact selected</h2>
-              <p className="mt-2 text-sm text-slate-500">Tap a contact to start a conversation.</p>
+               {/*  <MessageCircleQuestionMark size={156} color="#2065ee" /> */}
+              <h2 className="text-2xl font-semibold text-slate-800">No group selected</h2>
+              <p className="mt-2 text-sm text-slate-500">Tap a group  conversation.</p>
             </div>
           )}
-         
-        </main>
-       
+    </main>
+  
   )
 }
+
+export default GroupChat

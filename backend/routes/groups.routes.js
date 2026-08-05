@@ -1,7 +1,7 @@
 import express from "express";
 import protectedRoute from '../middleware/auth.middleware.js';
 
-import  {messageGroup} from "../controllers/groupmessage.controllers.js";
+import  {getGroupsMessages, messageGroup} from "../controllers/groupmessage.controllers.js";
 
 import {createGroup, getAllGroups} from "../controllers/group.controllers.js"
 
@@ -13,10 +13,9 @@ router.post('/',protectedRoute,createGroup);
 
 router.get('/',protectedRoute,getAllGroups); 
 
-/* router.post('/',protectedRoute,createGroup);
+ router.post('/message/:groupId',protectedRoute,messageGroup);
+ router.get('/message/:groupId',protectedRoute,getGroupsMessages);
 
-router.post('/',protectedRoute,createGroup); */
-
-
+/* router.post('/',protectedRoute,createGroup);  */
 
 export default router

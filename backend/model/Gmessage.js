@@ -15,9 +15,17 @@ const groupMessageSchema = new mongoose.Schema(
         required:true
     },
 
-    text:String,
+    text:{
+        type:String,
+        required:false,
+        maxLength:300
+    },
 
-    image:String
+    image:{
+        type:String,
+        default:null,
+        required:false
+    }
 
 },
 {timestamps:true}

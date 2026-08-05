@@ -10,6 +10,7 @@ export default function Groups() {
     const getAllGroups = useGroupStore((state) => state.getAllGroups);
       const allGroups = useGroupStore((state) => state.allGroups);
       const selectedGroup = useGroupStore((state) => state.selectedGroup);
+      const getGroupsMessages = useGroupStore((state) => state.getGroupsMessages);
       const selectedContact = chatStore((state) => state.selectedContact);
       const setSelectedContact = chatStore((state) => state.setSelectedContact);
       const setSelectedGroup = useGroupStore((state) => state.setSelectedGroup);
@@ -20,6 +21,13 @@ export default function Groups() {
   const handleSelectedGroup =(group)=>{
     setSelectedContact(null);
      setSelectedGroup(group);
+
+     setTimeout(()=>{
+       getGroupsMessages()
+       console.log("idSel",group?._id);
+
+     },1000) 
+    
 
   }
 
