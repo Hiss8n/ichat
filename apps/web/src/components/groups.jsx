@@ -1,8 +1,6 @@
 import { useState } from "react";
+import { chatStore, useGroupStore ,authStore} from "../../../../packages/api/src/store";
 
-/* import { groups } from "../API/data/groups"; */
-import { useGroupStore } from "../store/groupsStore";
-import { chatStore } from "../store/chatStore";
 
 
 export default function Groups() {

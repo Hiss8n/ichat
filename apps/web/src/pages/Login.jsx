@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { authStore } from '../store/authStore';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { authStore } from '../../../../packages/api/src/store';
+
 import Spinner from '../components/spinner';
 
 
-function SignUp() {
-
-  const register = authStore((state) => state.register);
+function Login() {
   const navigate =useNavigate();
-  const isCheckingAuth = authStore((state) => state.isCheckingAuth );
 
+const login = authStore((state) => state.login);
+const isCheckingAuth = authStore((state) => state.isCheckingAuth );
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: '',
   });
@@ -24,24 +22,25 @@ function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-   
+
   };
 
-  const handleSignUp = async(e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
-    // Handle sign-up logic here (e.g., API call)
-    const response=await register(formData.name,formData.email,formData.password);
+    const response=await login(formData.email,formData.password);
+  
     if(response.success){
-    setFormData({ name: '', email: '', password: '' });
+    setFormData({ email: '', password: '' });
     navigate('/');
     }else{
       alert(response.message);
 
     }
-    
-     
-  };
-   if(isCheckingAuth) return <Spinner label="Loading chats..." />
+   
+
+  }
+
+  if(isCheckingAuth) return <Spinner label="Loading chats..." />
 
   return (
     <div className="min-h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">
@@ -49,38 +48,22 @@ function SignUp() {
         <div className="flex w-full flex-col justify-center p-8 sm:p-10 lg:w-1/2 lg:p-12">
           <div className="mx-auto w-full max-w-md">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">
-              Create account
+              Welcome back
             </p>
             <h1 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">
-              Sign up for free
+              Log in to your account
             </h1>
             <p className="mt-3 text-sm text-slate-500 sm:text-base">
-              Create an account to get started with our platform.
+              Please enter your email and password to continue.
             </p>
 
             <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="name">
-                  Full name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter your full name"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="signup-email">
+                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="email">
                   Email
                 </label>
                 <input
-                  id="signup-email"
+                  id="email"
                   name="email"
                   type="email"
                   value={formData.email}
@@ -92,35 +75,35 @@ function SignUp() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="signup-password">
+                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="password">
                   Password
                 </label>
                 <input
-                  id="signup-password"
+                  id="password"
                   name="password"
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Create a password"
+                  placeholder="Enter your password"
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
                   required
                 />
               </div>
 
               <button
-              onClick={handleSignUp}
+              onClick={handleLogin}
                 type="submit"
                 className="w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
               >
-                Create account
+                Login
               </button>
             </form>
 
             <p className="mt-6 text-center text-sm text-slate-600">
-              Already have an account?{' '}
+              Don&apos;t have an account?{' '}
               
-                <Link to="/login">Log in</Link>
-                
+                <Link to="/signup">Sign up</Link>
+              
             </p>
           </div>
         </div>
@@ -139,4 +122,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Login;

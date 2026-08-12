@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Paperclip, Send, X } from 'lucide-react';
-import { chatStore } from '../store/chatStore';
-import { authStore } from '../store/authStore';
-import { useGroupStore } from '../store/groupsStore';
+import { authStore, chatStore, useGroupStore } from '../../../../packages/api/src/store';
+
 
 export const MessageInput = () => {
 

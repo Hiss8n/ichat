@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Search, Check } from "lucide-react";
-import { chatStore } from "../store/chatStore";
+
 import { useEffect } from "react";
-import { authStore } from "../store/authStore";
+
 import Groups from "./groups";
 import ContactList from "./contactList";
 import GroupContactList from "./groupContacts";
-import { useGroupStore } from "../store/groupsStore";
+
 import GroupInput from "./groupInput";
+import { useGroupStore } from "../../../../packages/api/src/store";
 
 export default function CreateGroup() {
 

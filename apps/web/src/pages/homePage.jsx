@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authStore } from '../store/authStore';
+
 import AddContact from '../components/addContact';
 import ContactList from '../components/contactList';
 import SearchInput from '../components/searchInput';
 import Groups from '../components/groups';
 import CreateGroup from '../components/createGroup';
-import { useGroupStore } from '../store/groupsStore';
+
 import {Chat} from "../components/chat"
+import { authStore, useGroupStore } from '../../../../packages/api/src/store';
 
 
 function HomePage() {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { chatStore } from '../store/chatStore';
-import { authStore } from '../store/authStore';
-import { useGroupStore } from '../store/groupsStore';
+import { authStore, chatStore, useGroupStore } from '../../../../packages/api/src/store';
+
 
 function GroupContactList() {
 

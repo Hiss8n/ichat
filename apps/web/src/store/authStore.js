@@ -1,4 +1,4 @@
-import { BACKEND_URL } from '../API/api';
+/* import { BACKEND_URL } from '../API/api';
 import { create } from 'zustand';
 import {io} from "socket.io-client"
 import { chatStore } from './chatStore';
@@ -81,7 +81,7 @@ export const authStore = create((set,get) => ({
         localStorage.setItem('user', JSON.stringify(data.user));
         set({ user: data.user, token: data.token });
       }
-     /*  get().connectSocket(data.user) */
+       get().connectSocket(data.user) 
 
       return data;
     } catch (error) {
@@ -144,3 +144,4 @@ export const authStore = create((set,get) => ({
     set({socket:null})
   }
 }));
+ */

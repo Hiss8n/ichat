@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { chatStore } from "../store/chatStore";
-import { useEffect } from "react";
-import { useGroupStore } from "../store/groupsStore";
+import { useGroupStore } from "../../../../packages/api/src/store";
+
 
 
 
@@ -11,7 +10,6 @@ function GroupInput() {
     const [name,setName]=useState("")
     const setGroupName=useGroupStore((state)=>state.setGroupName);
 
-
   const handleChange=async(event)=>{
    setName(event.target.value);
    console.log('name:',name);
@@ -20,15 +18,11 @@ function GroupInput() {
 
   const handleKeyDown=(e)=>{
    if(e.key==="Enter"){
-    
-    
+     
    }; 
   }
-
- 
   return (
-    
-      
+  
         <input
         id="group-name"
         name="group-name"

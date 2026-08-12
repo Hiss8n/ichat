@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { BACKEND_URL } from "../API/api";
+
 import { authStore } from "./authStore";
-import { getAllGroups } from "../../../backend/controllers/group.controllers";
-import { chatStore } from "./chatStore";
+import { chatStore } from "./chatStore"; 
+import { BACKEND_URL } from "../../API/api";
 
 
 export const useGroupStore= create((set,get)=>({
@@ -37,6 +37,8 @@ export const useGroupStore= create((set,get)=>({
         const groupMembers=get().newMembers
         console.log("mmbers",groupMembers);
         console.log("name:",groupName);
+
+   
         try {
             const response= await fetch(`${BACKEND_URL}/api/groups`,{
                 method:'POST',

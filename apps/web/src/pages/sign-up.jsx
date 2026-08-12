@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { authStore } from '../store/authStore';
+import { Link } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/spinner';
+import { authStore } from '../../../../packages/api/src/store';
 
 
-function Login() {
+function SignUp() {
+
+  const register = authStore((state) => state.register);
   const navigate =useNavigate();
+  const isCheckingAuth = authStore((state) => state.isCheckingAuth );
 
-const login = authStore((state) => state.login);
-const isCheckingAuth = authStore((state) => state.isCheckingAuth );
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
   });
@@ -22,25 +25,24 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+   
   };
 
-  const handleLogin = async(e) => {
+  const handleSignUp = async(e) => {
     e.preventDefault();
-    const response=await login(formData.email,formData.password);
-  
+    // Handle sign-up logic here (e.g., API call)
+    const response=await register(formData.name,formData.email,formData.password);
     if(response.success){
-    setFormData({ email: '', password: '' });
+    setFormData({ name: '', email: '', password: '' });
     navigate('/');
     }else{
       alert(response.message);
 
     }
-   
-
-  }
-
-  if(isCheckingAuth) return <Spinner label="Loading chats..." />
+    
+     
+  };
+   if(isCheckingAuth) return <Spinner label="Loading chats..." />
 
   return (
     <div className="min-h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">
@@ -48,22 +50,38 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
         <div className="flex w-full flex-col justify-center p-8 sm:p-10 lg:w-1/2 lg:p-12">
           <div className="mx-auto w-full max-w-md">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">
-              Welcome back
+              Create account
             </p>
             <h1 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">
-              Log in to your account
+              Sign up for free
             </h1>
             <p className="mt-3 text-sm text-slate-500 sm:text-base">
-              Please enter your email and password to continue.
+              Create an account to get started with our platform.
             </p>
 
             <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="email">
+                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="name">
+                  Full name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="signup-email">
                   Email
                 </label>
                 <input
-                  id="email"
+                  id="signup-email"
                   name="email"
                   type="email"
                   value={formData.email}
@@ -75,35 +93,35 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="password">
+                <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="signup-password">
                   Password
                 </label>
                 <input
-                  id="password"
+                  id="signup-password"
                   name="password"
                   type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Enter your password"
+                  placeholder="Create a password"
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
                   required
                 />
               </div>
 
               <button
-              onClick={handleLogin}
+              onClick={handleSignUp}
                 type="submit"
                 className="w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
               >
-                Login
+                Create account
               </button>
             </form>
 
             <p className="mt-6 text-center text-sm text-slate-600">
-              Don&apos;t have an account?{' '}
+              Already have an account?{' '}
               
-                <Link to="/signup">Sign up</Link>
-              
+                <Link to="/login">Log in</Link>
+                
             </p>
           </div>
         </div>
@@ -122,4 +140,4 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
   );
 }
 
-export default Login;
+export default SignUp;

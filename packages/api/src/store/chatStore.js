@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { BACKEND_URL } from '../API/api';
+import {BACKEND_URL} from "../../API/api"
 import { authStore } from './authStore';
 import { Socket } from 'socket.io-client';
 import { useGroupStore } from './groupsStore';
