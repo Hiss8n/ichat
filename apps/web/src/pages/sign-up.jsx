@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/spinner';
-import { authStore } from '../../../../packages/api/src/store';
+import { authStore } from '../../../../packages/store/src';
+
 
 
 function SignUp() {

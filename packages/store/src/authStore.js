@@ -1,7 +1,9 @@
-import {BACKEND_URL} from "../../API/api"
+import React from "react";
+import {BACKEND_URL} from "../../api/src/api"
 import { create } from 'zustand';
 import {io} from "socket.io-client"
-import { chatStore } from './chatStore';
+import { chatStore } from "./chatStore";
+
 
 
 export const authStore = create((set,get) => ({

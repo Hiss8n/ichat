@@ -8,7 +8,7 @@ import ContactList from "./contactList";
 import GroupContactList from "./groupContacts";
 
 import GroupInput from "./groupInput";
-import { useGroupStore } from "../../../../packages/api/src/store";
+import { authStore, useGroupStore } from '../../../../packages/store/src';
 
 export default function CreateGroup() {
 

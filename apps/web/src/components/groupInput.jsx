@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGroupStore } from "../../../../packages/api/src/store";
+import {  useGroupStore } from '../../../../packages/store/src';
 
 
 

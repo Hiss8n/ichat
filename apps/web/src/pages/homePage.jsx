@@ -8,7 +8,8 @@ import Groups from '../components/groups';
 import CreateGroup from '../components/createGroup';
 
 import {Chat} from "../components/chat"
-import { authStore, useGroupStore } from '../../../../packages/api/src/store';
+import { authStore } from '../../../../packages/store/src/authStore';
+
 
 
 function HomePage() {

@@ -1,10 +1,8 @@
+import React from "react";
 import { create } from "zustand";
-
+import {BACKEND_URL} from "../../api/src/api"
 import { authStore } from "./authStore";
 import { chatStore } from "./chatStore"; 
-import { BACKEND_URL } from "../../API/api";
-
-
 export const useGroupStore= create((set,get)=>({
     addedContact:null,
     newMembers:[],

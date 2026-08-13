@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { chatStore } from "../../../../packages/api/src/store";
+import {chatStore } from '../../../../packages/store/src';
 
 
 

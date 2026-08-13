@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { chatStore } from '../../../../packages/api/src/store'
+import { chatStore } from '../../../../packages/store/src'
+
 
 
 function AddContact({ onAdd }) {

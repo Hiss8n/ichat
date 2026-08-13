@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { authStore } from '../../../../packages/api/src/store';
+
 
 import Spinner from '../components/spinner';
+import { authStore } from '../../../../packages/store/src';
 
 
 function Login() {

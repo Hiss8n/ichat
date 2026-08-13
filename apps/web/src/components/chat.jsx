@@ -1,11 +1,11 @@
 import React from 'react'
 import GroupChat from './groupChat';
 import { IndividualChats } from './individualChat';
-
+import { authStore, useGroupStore } from '../../../../packages/store/src';
 
 
 import NoConversation from './NoConversation';
-import { chatStore, useGroupStore } from '../../../../packages/api/src/store';
+
 
 
 

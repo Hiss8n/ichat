@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { chatStore, useGroupStore ,authStore} from "../../../../packages/api/src/store";
+import { authStore, useGroupStore,chatStore } from '../../../../packages/store/src';
 
 
 

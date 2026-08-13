@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { MessageInput } from './messageInput';
 import { formatTime } from './individualChat';
-import { authStore, chatStore, useGroupStore } from '../../../../packages/api/src/store';
+import { authStore, useGroupStore } from '../../../../packages/store/src';
 
 function GroupChat() {
   const user =authStore((state)=>state.user);

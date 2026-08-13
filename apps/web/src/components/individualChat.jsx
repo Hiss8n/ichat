@@ -3,8 +3,7 @@ import {MessageCircleQuestionMark} from 'lucide-react';
 import { MessageInput } from './messageInput';
 import { useEffect } from 'react';
 import NoConversation from './NoConversation';
-import { authStore, chatStore } from '../../../../packages/api/src/store';
-
+import { authStore, useGroupStore,chatStore } from '../../../../packages/store/src';
 
 export const formatTime = (timestamp) => {
   if (!timestamp) return '';
