@@ -44,8 +44,8 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
   if(isCheckingAuth) return <Spinner label="Loading chats..." />
 
   return (
-    <div className="min-h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">
-      <div className="mx-auto flex min-h-[80vh] max-w-5xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+    <div className="h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">
+      <div className="mx-auto flex h-[80vh] max-w-5xl overflow-hidden rounded-sm bg-white shadow-2xl">
         <div className="flex w-full flex-col justify-center p-8 sm:p-10 lg:w-1/2 lg:p-12">
           <div className="mx-auto w-full max-w-md">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">
@@ -70,7 +70,7 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Enter your email"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
+                  className="w-full rounded-sm border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
                   required
                 />
               </div>
@@ -86,7 +86,7 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
+                  className="w-full rounded-sm border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
                   required
                 />
               </div>
@@ -94,7 +94,7 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
               <button
               onClick={handleLogin}
                 type="submit"
-                className="w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+                className="w-full rounded-sm bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
               >
                 Login
               </button>
@@ -110,8 +110,8 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
         </div>
 
         <div className="hidden w-1/2 items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-500 to-slate-900 p-10 lg:flex">
-          <div className="w-full max-w-sm rounded-3xl border border-white/20 bg-white/10 p-8 backdrop-blur-sm">
-            <div className="h-40 rounded-2xl border border-dashed border-white/40 bg-white/10" />
+          <div className="w-full max-w-sm rounded-md border border-white/20 bg-white/10 p-8 backdrop-blur-sm">
+            <div className="h-40 rounded-md border border-dashed border-white/40 bg-white/10" />
             <p className="mt-6 text-lg font-semibold text-white">Image placeholder</p>
             <p className="mt-2 text-sm text-blue-50">
               This side is styled as a visual panel for the auth experience.
