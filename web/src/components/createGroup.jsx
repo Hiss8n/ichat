@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Check } from "lucide-react";
+import { Search, Check, Plus } from "lucide-react";
 
 import { useEffect } from "react";
 
@@ -8,7 +8,9 @@ import ContactList from "./contactList";
 import GroupContactList from "./groupContacts";
 
 import GroupInput from "./groupInput";
-import { authStore, useGroupStore } from '../../../../packages/store/src';
+import { useGroupStore } from "../store/groupsStore";
+
+
 
 export default function CreateGroup() {
 
@@ -71,11 +73,12 @@ export default function CreateGroup() {
 
                       onClick={()=>setcreateAgroup(!createAgroup)}
              
-                        className="inline-flex items-center justify-center gap-0 px-1 py-0.5 text-sm font-semibold
-                  text-white bg-pink-600 rounded-sm hover:bg-pink-500 focus:outline-none focus:ring-1
-                   focus:ring-pink-600 focus:ring-offset-1 transition-all shadow-sm">
+                        className="inline-flex items-center justify-center gap-0 px-1 py-1 text-sm font-semibold
+                  text-white bg-transparent-600 rounded-full hover:bg-slate-200 focus:outline-none focus:ring-1
+                   focus:ring-slate-100 focus:ring-offset-1 transition-all shadow-sm">
                 
-               <span> + Add </span>
+             
+              <Plus color="#858585"  size={18}/>
              </button>
               
                </div>

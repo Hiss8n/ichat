@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../model/User.js';
+import User from "../model/User.js"
+
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secretkey';
 const TOKEN_EXPIRES_IN = '7d';
@@ -37,10 +38,12 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
 	try {
 		const { email, password } = req.body;
+	
 		if (!email || !password) return res.status(400).json({ message: 'all fields are required' });
-
 		const normalizedEmail = (email || '').trim().toLowerCase();
+		
 		const user = await User.findOne({ email: normalizedEmail });
+	
 		if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
 		const match = await bcrypt.compare(password, user.password);

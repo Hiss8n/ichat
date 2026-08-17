@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/spinner';
-import { authStore } from '../../../../packages/store/src';
 import { Mail, MessageSquareMore, User,Lock } from 'lucide-react';
+import { authStore } from '../store/authStore';
 
 
 
@@ -66,7 +66,7 @@ function SignUp() {
                 <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="name">
                   Full name
                 </label>
-                <User color="#8f9194"  className='absolute top-9 left-0' px-4  strokeWidth={0.75}/>
+                <User color="#8f9194"  className='absolute top-9 left-0 px-4 '  strokeWidth={0.75}/>
                 <input
                   id="name"
                   name="name"
@@ -83,7 +83,7 @@ function SignUp() {
                 <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="signup-email">
                   Email
                 </label>
-                <Mail color="#8f9194" className='absolute top-9 left-0' px-4  strokeWidth={0.75}  />
+                <Mail color="#8f9194" className='absolute top-9 left-0 px-4 '  strokeWidth={0.75}  />
                 <input
                   id="signup-email"
                   name="email"
@@ -100,7 +100,7 @@ function SignUp() {
                 <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="signup-password">
                   Password
                 </label>
-                <Lock color="#8f9194" strokeWidth={0.75} className='absolute top-9 left-0' px-4/>
+                <Lock color="#8f9194" strokeWidth={0.75} className='absolute top-9 left-0 px-4' />
                 <input
                   id="signup-password"
                   name="password"

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { chatStore } from '../../../../packages/store/src'
+import { chatStore } from '../store/chatStore'
 
 
 

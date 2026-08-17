@@ -8,7 +8,10 @@ import Groups from '../components/groups';
 import CreateGroup from '../components/createGroup';
 
 import {Chat} from "../components/chat"
-import { authStore } from '../../../../packages/store/src/authStore';
+import { authStore } from '../store/authStore';
+import { useGroupStore } from '../store/groupsStore';
+import { LogOut } from 'lucide-react';
+
 
 
 
@@ -48,13 +51,14 @@ function HomePage() {
                     <p className="truncate text-sm text-slate-500">{bio}</p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    <p className="text-xs whitespace-nowrap text-slate-400">Joined {createdAt}</p>
+                    
                     <button
                       onClick={handleLogout}
-                      className="rounded-sm bg-red-500 px-2 py-1 text-sm font-semibold text-white transition hover:bg-red-600"
+                      className=" bg-transparent px-1 py-1 rounded-full text-sm font-semibold text-white transition hover:bg-slate-300"
                     >
-                      Logout
+                     <LogOut color="#858585"  size={16}/>
                     </button>
+                    <p className="text-[8px] whitespace-nowrap text-slate-400"> {createdAt}</p>
                   </div>
                 </div>
               </div>

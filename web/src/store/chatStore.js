@@ -1,6 +1,6 @@
 import React from "react";
 import { create } from 'zustand';
-import {BACKEND_URL} from "../../api/src/api"
+import {BACKEND_URL} from "../api/api"
 import { authStore } from './authStore';
 import { Socket } from 'socket.io-client';
 import { useGroupStore } from './groupsStore';

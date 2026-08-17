@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 
-import Spinner from '../components/spinner';
-import { authStore } from '../../../../packages/store/src';
+import Spinner from '../components/spinner';import { Lock, Mail } from 'lucide-react';
+import { authStore } from '../store/authStore';
 
 
 function Login() {
@@ -30,7 +30,7 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
     e.preventDefault();
     const response=await login(formData.email,formData.password);
   
-    if(response.success){
+    if(response?.success){
     setFormData({ email: '', password: '' });
     navigate('/');
     }else{
@@ -46,23 +46,24 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
   return (
     <div className="h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">
       <div className="mx-auto flex h-[80vh] max-w-5xl overflow-hidden rounded-sm bg-white shadow-2xl">
-        <div className="flex w-full flex-col justify-center p-8 sm:p-10 lg:w-1/2 lg:p-12">
+        <div className="flex w-full flex-col justify-center  sm:p-10 lg:w-1/2 lg:p-12">
           <div className="mx-auto w-full max-w-md">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">
               Welcome back
             </p>
-            <h1 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">
+           {/*  <h1 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">
               Log in to your account
-            </h1>
+            </h1> */}
             <p className="mt-3 text-sm text-slate-500 sm:text-base">
               Please enter your email and password to continue.
             </p>
 
-            <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
-              <div>
+            <form className="mt-6 space-y-3" onSubmit={handleSubmit}>
+              <div className='relative'>
                 <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="email">
                   Email
                 </label>
+                  <Mail color="#8f9194"  className='absolute top-10 left-0  px-5 ' strokeWidth={0.75}/>
                 <input
                   id="email"
                   name="email"
@@ -70,15 +71,16 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Enter your email"
-                  className="w-full rounded-sm border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
+                  className="w-full rounded-sm border  border-slate-200 bg-slate-50 px-6 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
                   required
                 />
               </div>
 
-              <div>
+              <div className='relative'>
                 <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="password">
                   Password
                 </label>
+                  <Lock color="#8f9194"  className='absolute top-10 left-0 px-5'   strokeWidth={0.75} />
                 <input
                   id="password"
                   name="password"
@@ -86,7 +88,7 @@ const isCheckingAuth = authStore((state) => state.isCheckingAuth );
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
-                  className="w-full rounded-sm border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
+                  className="w-full rounded-sm border border-slate-200 bg-slate-50 px-6 py-3 text-sm outline-none transition focus:border-blue-500 focus:bg-white"
                   required
                 />
               </div>

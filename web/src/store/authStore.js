@@ -1,18 +1,21 @@
 import React from "react";
-import {BACKEND_URL} from "../../api/src/api"
+import {BACKEND_URL} from "../api/api"
 import { create } from 'zustand';
 import {io} from "socket.io-client"
+import { Import } from "lucide-react";
 import { chatStore } from "./chatStore";
+
 
 
 
 export const authStore = create((set,get) => ({
   user: null,
-  token: null,
+  token:null,
   users:[],
   checkingAuth: true,
   socket:null,
   onlineUsers:[],
+  
 
   register: async (name, email, password) => {
     set({ checkingAuth: true });
@@ -45,19 +48,25 @@ export const authStore = create((set,get) => ({
   },
 
   checkAuth: async () => {
-    set({ checkingAuth: true });
+    set({ checkingAuth: true }); 
     try {
       const storedToken = localStorage.getItem('token');
       const storedUser = localStorage.getItem('user');
       const myUser=JSON.parse(storedUser)
+      
+
       set({ user: myUser, token: storedToken });
       get().connectSocket(myUser);
+
+      console.log("storedT",storedToken);
+      console.log("$$",get().token);
+
       chatStore.getState().subscribeToMessages(myUser._id);
-       set({ checkingAuth: false });
+
       return Boolean(storedToken);
     } catch (error) {
       console.log('There is error in auth', error);
-      set({ user: null, token: null });
+      set({checkingAuth:false, user: null, token: null });
       return false;
     } finally {
       set({ checkingAuth: false });
@@ -75,17 +84,18 @@ export const authStore = create((set,get) => ({
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-       get().connectSocket(data.user);
-        chatStore.getState().subscribeToMessages(data.user._id);
 
-      if (data.token) {
+       get().connectSocket(data.user);
+        chatStore.getState().subscribeToMessages(data.user?._id);
+
+     
         localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+         localStorage.setItem('user', JSON.stringify(data.user)); 
         set({ user: data.user, token: data.token });
-      }
+    
      /*  get().connectSocket(data.user) */
 
-      return data;
+      return true;
     } catch (error) {
       console.log('Error login in', error);
     } finally {
