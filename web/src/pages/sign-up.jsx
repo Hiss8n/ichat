@@ -58,7 +58,7 @@ function SignUp() {
               <MessageSquareMore color="#227aec" size={84} />
             </div>
             <p className="mt-3 text-sm text-slate-500 sm:text-base">
-              Create an account to get started with our platform.
+              Create an account to get started with our iChat.
             </p>
 
             <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
@@ -66,7 +66,7 @@ function SignUp() {
                 <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="name">
                   Full name
                 </label>
-                <User color="#8f9194"  className='absolute top-9 left-0 px-4 '  strokeWidth={0.75}/>
+                <User color="red"  className='absolute top-9 left-0 px-4 '  strokeWidth={0.75}/>
                 <input
                   id="name"
                   name="name"
@@ -132,12 +132,17 @@ function SignUp() {
         </div>
 
         <div className="hidden w-1/2 items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-500 to-slate-900 p-10 lg:flex">
-          <div className="w-full max-w-sm rounded-md border border-white/20 bg-white/10 p-8 backdrop-blur-sm">
-            <div className="h-40 rounded-md border border-dashed border-white/40 bg-white/10" />
-            <p className="mt-6 text-lg font-semibold text-white">Image placeholder</p>
-            <p className="mt-2 text-sm text-blue-50">
-              This side is styled as a visual panel for the auth experience.
-            </p>
+          <div className="w-full max-w-sm rounded-md  bg-white/10 p-8 backdrop-blur-sm">
+           {/*  <div className="h-40 rounded-md border border-dashed border-white/40 bg-white/10" /> */}
+           <MessageSquareMore className='w-full'  size={120} color='orange'/>
+           <div className='flex h-[160px] w-full items-center justify-center gap-2'>
+            {["#Family", "#Friends", "#Everywhere", "#Anytime"].map((item) => (
+               <div key={item} className='flex items-center gap-3'>
+                    <button className='px-2 py-1 bg-slate-400/50 border-sm rounded-sm text-white backdrop-blur-xl'>{item}</button>
+                    
+                </div>
+                  ))}
+               </div>
           </div>
         </div>
       </div>

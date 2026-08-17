@@ -5,6 +5,7 @@ import SignUp from './pages/sign-up';
 import HomePage from './pages/homePage';
 import { authStore } from './store/authStore';
 import Spinner from './components/spinner';
+import {Toaster} from 'react-hot-toast'
 
 
 
@@ -15,7 +16,7 @@ function App() {
   const token = authStore((state) => state.token);
   const checkingAuth = authStore((state) => state.checkingAuth);
   const checkAuth = authStore((state) => state.checkAuth);
-  console.log("tok:",token);
+ 
 
   useEffect(() => {
     checkAuth();
@@ -26,12 +27,18 @@ function App() {
   }
 
   return (
+    <div>
+     <Toaster
+      position="top-center"
+      reverseOrder={false}
+     />
     <Routes>
-      <Route path="/" element={token ? <HomePage /> : <Navigate replace to="/login" />} />
+     <Route path="/" element={token ? <HomePage /> : <Navigate replace to="/login" />} />
       <Route path="/login" element={!token ? <Login /> : <Navigate replace to="/" />} />
       <Route path="/signup" element={!token ? <SignUp /> : <Navigate replace to="/" />} />
       <Route path="*" element={token ? <Navigate replace to="/" /> : <Navigate replace to="/login" />} />
     </Routes>
+      </div>
   );
 }
 

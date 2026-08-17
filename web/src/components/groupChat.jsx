@@ -3,7 +3,7 @@ import { MessageInput } from './messageInput';
 import { formatTime } from './individualChat';
 import { chatStore } from '../store/chatStore';
 import { useGroupStore } from '../store/groupsStore';
-
+import { authStore } from '../store/authStore';
 
 function GroupChat() {
   const user =authStore((state)=>state.user);

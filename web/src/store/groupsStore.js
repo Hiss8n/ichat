@@ -10,6 +10,7 @@ export const useGroupStore= create((set,get)=>({
     allGroups:[],
     oneGroup:null,
     groupName:"",
+    isLoading:false,
     createAgroup:false,
     selectedGroup:null,
     setAddedContact:(addedContact) => set({ addedContact }),
@@ -33,8 +34,7 @@ export const useGroupStore= create((set,get)=>({
     createNewGroup:async(groupName)=>{
         const token = authStore.getState().token;
         const groupMembers=get().newMembers
-        console.log("mmbers",groupMembers);
-        console.log("name:",groupName);
+       set({isLoading:true})
 
    
         try {
@@ -59,6 +59,7 @@ export const useGroupStore= create((set,get)=>({
             
         } catch (error) {
             console.log("Something went wrong",error)
+            set({isLoading:false});
             
         }
     },
@@ -67,6 +68,7 @@ export const useGroupStore= create((set,get)=>({
       },
     getAllGroups:async()=>{
           const token = authStore.getState().token;
+          set({isLoading:true})
         try {
             const response=await fetch(`${BACKEND_URL}/api/groups`,{
                 method:'GET',
@@ -77,14 +79,14 @@ export const useGroupStore= create((set,get)=>({
               
             })
 
-
-            const data = await response.json();
+     const data = await response.json();
             
 
         set({allGroups:data})
             
         } catch (error) {
             console.log('Some thing went wrong,cant get groups',error)
+            set({isLoading:false})
             
         }
     },

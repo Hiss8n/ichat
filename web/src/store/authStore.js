@@ -61,7 +61,7 @@ export const authStore = create((set,get) => ({
       console.log("storedT",storedToken);
       console.log("$$",get().token);
 
-      chatStore.getState().subscribeToMessages(myUser._id);
+      chatStore.getState().subscribeToMessages(myUser?._id);
 
       return Boolean(storedToken);
     } catch (error) {

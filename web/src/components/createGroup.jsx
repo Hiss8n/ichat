@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Search, Check, Plus } from "lucide-react";
 
+
 import { useEffect } from "react";
 
 import Groups from "./groups";
@@ -9,6 +10,7 @@ import GroupContactList from "./groupContacts";
 
 import GroupInput from "./groupInput";
 import { useGroupStore } from "../store/groupsStore";
+import toast from "react-hot-toast";
 
 
 
@@ -29,11 +31,14 @@ export default function CreateGroup() {
   const handleGroupCreation=async()=>{
     if(newMembers.length<2){
 
-      alert("You can't create a group with less than 2 people")
+     
+      toast.error("You can't create a group with less than 2 people")
+
       return
         } else{
            await createNewGroup(groupName);
-          alert("Created successfull")
+        
+          toast.success("Create a group success!")
         }
         const timer=setTimeout(()=>{
           getAllGroups()
@@ -83,14 +88,7 @@ export default function CreateGroup() {
               
                </div>
                {createAgroup && <GroupInput/>}
-             
-          
-          
-      
-           
              </div>
-
-            
              <hr className="mb-3 border-slate-800 w-[100%]" />
 
              {
@@ -101,7 +99,6 @@ export default function CreateGroup() {
                <button
 
                onClick={handleGroupCreation}
-               
                className="items-center justify-center gap-0 px-3 py-2.5 text-sm font-semibold
                   text-white bg-red-500 rounded-sm hover:bg-pink-700 focus:outline-none focus:ring-1
                    focus:ring-pink-500 focus:ring-offset-1 transition-all shadow-sm sm:px-1 sm:py-1">
