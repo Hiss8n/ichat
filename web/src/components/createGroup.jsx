@@ -11,6 +11,7 @@ import GroupContactList from "./groupContacts";
 import GroupInput from "./groupInput";
 import { useGroupStore } from "../store/groupsStore";
 import toast from "react-hot-toast";
+import Spinner from "./spinner";
 
 
 
@@ -19,6 +20,7 @@ export default function CreateGroup() {
   const createAgroup=useGroupStore((state)=>state.createAgroup)
   const setcreateAgroup=useGroupStore((state)=>state.setcreateAgroup)
   const getAllGroups=useGroupStore((state)=>state.getAllGroups)
+  const isLoading=useGroupStore((state)=>state.isLoading);
 
   const createNewGroup=useGroupStore((state)=>state.createNewGroup)
   const groupName=useGroupStore((state)=>state.groupName)
@@ -48,6 +50,7 @@ export default function CreateGroup() {
         clearNewMembers()
 
   }
+  /* if(isLoading) return<Spinner/> */
  
   return (
      <div className="relative flex-1 w-full ">

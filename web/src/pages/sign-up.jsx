@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/spinner';
 import { Mail, MessageSquareMore, User,Lock } from 'lucide-react';
 import { authStore } from '../store/authStore';
+import toast from 'react-hot-toast';
 
 
 
@@ -35,16 +36,18 @@ function SignUp() {
     // Handle sign-up logic here (e.g., API call)
     const response=await register(formData.name,formData.email,formData.password);
     if(response.success){
+      toast.success("Sign in success ✅")
     setFormData({ name: '', email: '', password: '' });
     navigate('/');
     }else{
       alert(response.message);
+      toast.error(response.message | "something went wrong ❌")
 
     }
     
      
   };
-   if(isCheckingAuth) return <Spinner label="Loading chats..." />
+   if(isCheckingAuth) return <Spinner />
 
   return (
     <div className="min-h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">

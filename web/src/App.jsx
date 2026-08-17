@@ -29,7 +29,7 @@ function App() {
   return (
     <div>
      <Toaster
-      position="top-center"
+      position="right-center"
       reverseOrder={false}
      />
     <Routes>
