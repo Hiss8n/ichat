@@ -6,6 +6,9 @@ import Cactus from "./components/decorationObject"
 import CustomButton from "./components/CustomButtom"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Image } from 'expo-image'
+import { Ionicons } from "@expo/vector-icons";
+
+
 const WellcomePage = () => {
   return (
     
@@ -18,65 +21,30 @@ const WellcomePage = () => {
       <View style={{height:'60%',marginTop:30}}>
 
       <Image  source={require("../../assets/images/ichat-icon.png")}
-              style={{ width: 'auto', height: 220 ,top:60,position:'relative',marginBottom:18}}/>
+              style={{ width: 'auto', height: 220 ,top:60,marginBottom:28,shadowColor:'#000',shadowOffset:12,shadowRadius:12}}/>
               <View style={{backgroundColor:'transparent',alignItems:'center'}}>
-               <Text style={{fontSize:26,marginTop:50,textTransform:'uppercase',
-               paddingLeft:8,
-                marginLeft:10,lineHeight:36
-                ,padding:0,marginLeft:0,textAlign:'left',flexDirection:'column',marginLeft:12,textDecorationColor:'white'}}>
-                   Join Families & Friends Everywhere, AnyWhere on ichat
+               <Text style={styles.introTxt}>
+                   Join Families & Friends Everywhere, AnyWhere on <Text style={{color:'#ebe3e3',shadowColor:12,shadowColor:'#000', textShadowColor: "rgba(0, 0, 0, 0.8)",
+    textShadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    textShadowRadius: 4,}}>ichat</Text> 
                    </Text>
                  </View>
                  
            {/*   <Cactus colors="#08c16e64" size={60} opacity={0.6} left={60} top={280}/>  */} 
       </View>
-   {/*    <View style={styles.welcomeTop}>
-       {/*  <View  style={{flexDirection:'column',marginRight:21,top:20}}>
-           <Cactus colors="#32bd7f" size={80} opacity={0.2}/> 
 
-        </View> 
-         
-         <Text>Welcome screeen</Text>
-     
-
-      </View>
- */}
-   {/*    <DecorativeObject style={{with:100,height:120}}/> */}
-   {/*  <Cactus colors="#32bd7f" size={100} opacity={0.2} top={10}/> 
-     <Cactus colors="#61e5aa" size={80} opacity={1} left={300} top={190}/> 
-
-     */}
      <Cactus colors="#08c16e64" size={120} opacity={0.8} left={60} top={280}/>  
 
      <View style={{flexDirection:'column',height:100,alignItems:'center'}}>
-      <TouchableOpacity style={styles.getStartedBtn}>
+      <TouchableOpacity style={styles.getStartedBtn} onPress={()=>router.push('/sign_up')}>
         <Text style={styles.getStarted}>Get Started</Text>
+        <Ionicons name='arrow-forward-outline' size={24} color='#000' style={styles.forwardArrow}/>
       </TouchableOpacity>
-       
-     
-       
-      
+        
      </View>
- 
-  
-     
-  
-{/* 
-    <CustomButton
-      style={styles.nextBtn}
-      color='white'
-      textColor='black'
-      radius={4}
-    
-      
-      onPress={()=>router.push("/sign_up")}>
-        <Text>Get started...</Text>
-      </CustomButton> */}
-   
-
-      
-      
-     
     </LinearGradient >
    
   )
@@ -93,6 +61,27 @@ const styles = StyleSheet.create({
     welcomeTop:{
       width:"auto",
       height:'auto'
+    },
+    introTxt:{
+    textShadowColor: "rgba(196, 198, 198, 0.2)",
+    textShadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    textShadowRadius: 4,
+    fontSize:26,
+    marginTop:60,
+    textTransform:'uppercase',
+    paddingLeft:8,
+    marginLeft:10,lineHeight:36,
+    padding:0,
+    marginLeft:0,
+    textAlign:'left',
+    flexDirection:'column',
+    marginLeft:12,
+    textDecorationColor:'white',
+    lineHeight:40
+
     },
     nextBtn:{
       marginHorizontal:20,
@@ -113,6 +102,8 @@ const styles = StyleSheet.create({
       shadowRadius: 12,
     // Android
       elevation:10,
+      flexDirection:'row',
+      gap:10
      
     },
     getStarted:{
@@ -121,6 +112,14 @@ const styles = StyleSheet.create({
       fontWeight:400,
     
       
+    },
+    forwardArrow:{
+      fontFamily:35,
+      marginTop:4,
+      paddingRight:1,
+      shadowColor:'#000',
+      shadowRadius:5,
+      shadowOpacity:12
     }
     
 })
