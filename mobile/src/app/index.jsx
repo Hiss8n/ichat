@@ -39,7 +39,7 @@ const WellcomePage = () => {
      <Cactus colors="#08c16e64" size={120} opacity={0.8} left={60} top={280}/>  
 
      <View style={{flexDirection:'column',height:100,alignItems:'center'}}>
-      <TouchableOpacity style={styles.getStartedBtn} onPress={()=>router.push('/sign_up')}>
+      <TouchableOpacity style={styles.getStartedBtn} onPress={()=>router.push('/sign-up')}>
         <Text style={styles.getStarted}>Get Started</Text>
         <Ionicons name='arrow-forward-outline' size={24} color='#000' style={styles.forwardArrow}/>
       </TouchableOpacity>
