@@ -17,13 +17,16 @@ import {
   Eye,
   EyeOff,
   MessageCircle,
+  Apple,
+
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS  from "../constants/color";
+import { router } from "expo-router";
 
 
 
-export default function SignInScreen() {
+export default function SignUpScreen() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
@@ -94,11 +97,11 @@ export default function SignInScreen() {
             {/* Heading */}
             <View style={styles.headingContainer}>
               <Text style={styles.title}>
-                Sign in to your account
+                Create an account
               </Text>
 
               <Text style={styles.subtitle}>
-                Welcome back! Please sign in to continue
+                Welcome! Please sign un to continue
               </Text>
             </View>
 
@@ -200,7 +203,7 @@ export default function SignInScreen() {
               onPress={handleSignIn}
             >
               <Text style={styles.signInText}>
-                Sign In
+                Create Account
               </Text>
             </Pressable>
 
@@ -214,7 +217,7 @@ export default function SignInScreen() {
             </View>
 
             <Text style={styles.continueText}>
-              Continue with
+              Sign Up with
             </Text>
 
             {/* OAuth Buttons */}
@@ -229,6 +232,11 @@ export default function SignInScreen() {
                 onPress={handleGoogle}
               >
                 <Text style={styles.googleIcon}>G</Text>
+               {/*  <go
+                 color="#000000" 
+                 size={22} 
+                 strokeWidth={2} 
+                 /> */}
 
                 <Text style={styles.oauthText}>
                   Google
@@ -243,7 +251,12 @@ export default function SignInScreen() {
                 ]}
                 onPress={handleApple}
               >
-                <Text style={styles.appleIcon}>●</Text>
+               {/*  <Text style={styles.appleIcon}>●</Text> */}
+                <Apple 
+                 color="#000000" 
+                 size={22} 
+                 strokeWidth={2} 
+                 />
 
                 <Text style={styles.oauthText}>
                   Apple
@@ -252,17 +265,17 @@ export default function SignInScreen() {
 
             </View>
 
-            {/* Sign Up */}
+            {/* Sign up */}
             <View style={styles.signupContainer}>
               <Text style={styles.signupText}>
-                Don't have an account?
+                Already have an account ?
               </Text>
 
               <Pressable
-                onPress={() => console.log("Sign up")}
+                onPress={() =>router.push('/login')}
               >
                 <Text style={styles.signupLink}>
-                  {" "}Sign up
+                  {" "}Sign In
                 </Text>
               </Pressable>
             </View>
