@@ -5,19 +5,20 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
-
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
+  TouchableOpacity,
 } from "react-native";
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import {
-  User,
+
   Mail,
   Lock,
   Eye,
   EyeOff,
   MessageCircle,
   AppleIcon,
+  ArrowLeft,
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS  from "../constants/color";
@@ -45,9 +46,35 @@ export default function SignInScreen() {
     console.log("Sign in:", form);
   };
 
-  const handleGoogle = () => {
-    console.log("Continue with Google");
+
+/* GOOGLE AUTH */
+
+
+  const handleGoogle = async () => {
+    try {
+      // Check if the device has Google Play Services available (mostly for Android)
+      await GoogleSignin.hasPlayServices();
+      
+      // Trigger the login modal
+      const userInfo = await GoogleSignin.signIn();
+      
+      console.log('User Info Target:', userInfo);
+      // Access idToken or user profile fields here: userInfo.data.idToken
+      Alert.alert('Success', `Logged in as ${userInfo.data.user.name}`);
+      
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('User cancelled the login flow');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('Sign in operation is already in progress');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log('Google Play Services not available or outdated');
+      } else {
+        console.log('Some other error happened:', error);
+      }
+    }
   };
+
 
   const handleApple = () => {
     console.log("Continue with Apple");
@@ -59,12 +86,23 @@ export default function SignInScreen() {
         style={{ flex: 1, }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-     {/*    <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-        > */}
           <View style={styles.container}>
+
+            
+          <View>
+            <TouchableOpacity
+               style
+              onPress={()=>router.push("/")}
+              >
+               <ArrowLeft
+                  size={20}
+                  color={COLORS.brightGreen}
+                  strokeWidth={2}
+                  />
+        
+            </TouchableOpacity>
+                  
+          </View>
 
             {/* Logo */}
             <View style={styles.logoContainer}>
@@ -250,13 +288,14 @@ export default function SignInScreen() {
                 onPress={() =>router.push('sign-up')}
               >
                 <Text style={styles.signupLink}>
+
                   {" "}Sign up
                 </Text>
               </Pressable>
             </View>
 
           </View>
-       {/*  </ScrollView> */}
+   
     </KeyboardAvoidingView>
      </SafeAreaView> 
   );
@@ -401,7 +440,7 @@ const styles = StyleSheet.create({
   /* SIGN IN */
 
   signInButton: {
-    height: 60,
+    height: 40,
     borderRadius: 8,
     backgroundColor: COLORS.brightGreen,
     alignItems: "center",

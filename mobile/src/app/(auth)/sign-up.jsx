@@ -1,33 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   View,
   Text,
   TextInput,
   Pressable,
   StyleSheet,
-
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
+  Touchable,
+  TouchableOpacity,
 } from "react-native";
+
 import {
   User,
   Mail,
   Lock,
   Eye,
   EyeOff,
-  MessageCircle,
+ MessageCircle,
   Apple,
-
+  ArrowBigLeftIcon,
+  ArrowLeft,
 } from "lucide-react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import COLORS  from "../constants/color";
 import { router } from "expo-router";
 
-
-
 export default function SignUpScreen() {
+
+   useEffect(() => {
+        GoogleSignin.configure({
+          // Pass the WEB client ID here (do NOT use the Android client ID here)
+          webClientId: '702609845604-cagesp3r8tc73mm1vnaino542r7t74od.apps.googleusercontent.com', 
+          offlineAccess: true, // If you need a refresh token to access the Google API from your backend
+          profileImageSize: 120,
+        });
+      }, []);
   const [showPassword, setShowPassword] = useState(false);
+
+  const inset = useSafeAreaInsets();
 
   const [form, setForm] = useState({
     name: "",
@@ -42,12 +56,40 @@ export default function SignUpScreen() {
     }));
   };
 
-  const handleSignIn = () => {
-    console.log("Sign in:", form);
+
+  /* Google sign in implementation */
+
+  const handleGoogle = async () => {
+    console.log("*****gooooogle****")
+    try {
+      // Check if the device has Google Play Services available (mostly for Android)
+      const serv=await GoogleSignin.hasPlayServices();
+      console.log("serve",serv);
+      
+      // Trigger the login modal
+      const userInfo = await GoogleSignin.signIn();
+
+      
+      console.log('User Info Target:', userInfo);
+      // Access idToken or user profile fields here: userInfo.data.idToken
+      Alert.alert('Success', `Logged in as ${userInfo.data.user.name}`);
+      
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('User cancelled the login flow');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('Sign in operation is already in progress');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log('Google Play Services not available or outdated');
+      } else {
+        console.log('Some other error happened:', error);
+      }
+    }
   };
 
-  const handleGoogle = () => {
-    console.log("Continue with Google");
+
+  const handleSignIn = () => {
+    console.log("Sign in:", form);
   };
 
   const handleApple = () => {
@@ -55,9 +97,10 @@ export default function SignUpScreen() {
   };
 
   return (
-     <SafeAreaView style={styles.safeArea}>
+     <SafeAreaView style={[styles.safeArea,{paddingBottom:inset.top*-1.05,paddingBottom:inset.bottom*-1.05}]}>
+
       <KeyboardAvoidingView
-        style={{ flex: 1, }}
+        style={{ flex: 1}}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
      {/*    <ScrollView
@@ -66,6 +109,20 @@ export default function SignUpScreen() {
           keyboardShouldPersistTaps="handled"
         > */}
           <View style={styles.container}>
+            <View>
+              <TouchableOpacity
+              style
+              onPress={()=>router.push("/")}
+              >
+                    <ArrowLeft
+               size={20}
+                color={COLORS.brightGreen}
+                strokeWidth={2}
+              />
+
+              </TouchableOpacity>
+          
+            </View>
 
             {/* Logo */}
             <View style={styles.logoContainer}>
@@ -290,7 +347,8 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor:'transparent',
+    borderColor:'transparent',
     paddingBottom:-28   //This code have some errors
   },
 
@@ -426,7 +484,7 @@ const styles = StyleSheet.create({
   /* SIGN IN */
 
   signInButton: {
-    height: 60,
+    height: 40,
     borderRadius: 8,
     backgroundColor: COLORS.brightGreen,
     alignItems: "center",
@@ -478,7 +536,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "600",
     color: COLORS.black,
-    marginBottom: 14,
+    marginBottom: 8,
   },
 
   /* OAUTH */
@@ -524,7 +582,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: 12,
   },
 
   signupText: {
